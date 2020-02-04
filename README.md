@@ -1,6 +1,5 @@
 # NSA
 
-Team members:
-- Nikita Bafna
-- Shivali Jejurkar
-- Aniruddha Patil
+This is a data retrieval service for NEXRAD data file download.
+Resources:
+https://github.com/ARM-DOE/pyart/tree/master/examples
