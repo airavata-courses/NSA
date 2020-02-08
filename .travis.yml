@@ -4,7 +4,9 @@ jdk:
 
 script:
   - cd consumer
+  - ant deps
   - ant build
   - cd ..
   - cd producer
+  - ant deps
   - ant build
