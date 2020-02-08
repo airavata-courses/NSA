@@ -10,7 +10,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class SimpleConsumer {
    public static void main(String[] args) throws Exception {
-	  System.out.println("Starting consumer...");
       if(args.length == 0){
          System.out.println("Enter topic name");
          return;
