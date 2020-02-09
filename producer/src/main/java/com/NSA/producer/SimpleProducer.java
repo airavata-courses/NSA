@@ -17,7 +17,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 public class SimpleProducer {
  
  public static void main(String[] args) throws Exception{
-    
+	 System.out.println("Starting producer...");
     // Check arguments length value
     if(args.length == 0){
        System.out.println("Enter topic name");

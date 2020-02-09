@@ -1,0 +1,13 @@
+language: java
+jdk:
+  - oraclejdk13
+
+script:
+  - cd consumer
+  - mvn clean install
+  - cd ..
+  - cd producer
+  - mvn clean install
+  - cd ..
+  - cd admin
+  - mvn clean install
