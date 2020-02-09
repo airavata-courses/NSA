@@ -8,3 +8,6 @@ script:
   - cd ..
   - cd producer
   - mvn clean install
+  - cd ..
+  - cd admin
+  - mvn clean install
