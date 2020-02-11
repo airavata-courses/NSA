@@ -14,8 +14,19 @@ sess.use(cookieParser());
 sess.use(cors())
 sess.use(session({secret: "secret!"}));
 
-mongoose.connect('mongodb://localhost:27017/weather-prediction', {useNewUrlParser: true});
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
 
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("weather_prediction");
+  var myobj = { name: "User", status: "Success" };
+  dbo.collection("session").insertOne(myobj, function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");
+    db.close();
+  });
+});
 
 sess.get('/', function(req, res){
    if(req.session.page_views){
