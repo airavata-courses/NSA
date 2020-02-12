@@ -7,4 +7,4 @@ Team members:
 
 # Deployment guide
 
-Please visit our Wiki page to get started with the deployment instructions
+Please visit our [Wiki](https://github.com/airavata-courses/NSA/wiki/NSA-HOME) page to get started with the deployment instructions
