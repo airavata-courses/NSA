@@ -14,7 +14,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       curr_view: props => (
-        <Login {...props} changeView={this.changeToDashboard} />
+        <Dashboard {...props} changeView={this.changeToDashboard} />
       )
     };
   }

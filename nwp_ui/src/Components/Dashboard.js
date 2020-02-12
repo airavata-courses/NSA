@@ -1,24 +1,60 @@
 import React from "react";
 
 import "../App.css";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { Link } from "react-router";
-class Dashboard extends React.Component {
-  handleChange = event => {
-    this.setState({ name: event.target.value });
-  };
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {Button} from "reactstrap";
+import Select from "react-select";
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const user = {
-      userName: this.state.name,
-      firstName: "shiv",
-      lastName: "Jejurkar",
-      emailId: "null"
+class Dashboard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            date: new Date(),
+            user: {
+                userName: "sj",
+                firstName: "shiv",
+                lastName: "Jejurkar",
+                emailId: "null"
+            },
+            radarID: 'KIND',
+            options : [
+                {value: 'KIND', label: 'KIND'},
+                {value: 'KINX', label: 'KINX'},
+            ]
+        }
+
+    }
+  // handleChange = event => {
+  //   this.setState({ name: event.target.value });
+  // };
+
+    handleDateChange = date => {
+        this.setState({date},
+            () => console.log(`Date selected:`, this.state.date)
+            );
     };
 
-    const jsonobj = JSON.stringify(user);
-    const Col = 1;
+    handleRadarChange = radarID => {
+        this.setState({radarID},
+            () => console.log(`Radar selected:`, this.state.radarID)
+            );
+    }
+
+
+    wrapData = () => {
+        let dateISO = this.state.date.toISOString();
+        let year = dateISO.substring(0,4);
+        let month = dateISO.substring(5,7);
+        let day = dateISO.substring(8, 10);
+        let radarID = this.state.radarID.value;
+        let message = year + ' ' + month + ' ' + day + ' ' + radarID + ' ' + this.state.user.userName
+        console.log(message)
+    };
+
+
+    // const jsonobj = JSON.stringify(user);
+    // const Col = 1;
 
     // axios.post("http://localhost:8081/login", { user }).then(res => {
     //   console.log(res.data);
@@ -28,48 +64,33 @@ class Dashboard extends React.Component {
     //     </div>;
     //   }
     // });
-  };
 
   render() {
     return (
-      <Form>
-        <Form.Row>
-          <Form.Group controlId="formGridState">
-            <Form.Label>State</Form.Label>
-            <Form.Control as="select">
-              <option>Choose...</option>
-              <option>...</option>
-            </Form.Control>
-          </Form.Group>
+     <div>
+         Welcome to the dashboard
+         <div>
+             Date:
+             <DatePicker
+                 selected={this.state.date}
+                 onChange={this.handleDateChange}
+             />
+         </div>
+         <div>
+             RadarID:
+             <Select
+                 value={this.state.radarID}
+                 onChange={this.handleRadarChange}
+                 options={this.state.options}
+             />
+         </div>
+       <div>
+           <Button onClick={this.wrapData}>
+               Forecast!
+           </Button>
+       </div>
 
-          <Form.Group controlId="formGridState">
-            <Form.Label>State</Form.Label>
-            <Form.Control as="select">
-              <option>Choose...</option>
-              <option>...</option>
-            </Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="formGridState">
-            <Form.Label>State</Form.Label>
-            <Form.Control as="select">
-              <option>Choose...</option>
-              <option>...</option>
-            </Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="formGridState">
-            <Form.Label>State</Form.Label>
-            <Form.Control as="select">
-              <option>Choose...</option>
-              <option>...</option>
-            </Form.Control>
-          </Form.Group>
-        </Form.Row>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
+     </div>
     );
   }
 }
