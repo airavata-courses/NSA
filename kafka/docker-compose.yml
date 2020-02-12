@@ -20,9 +20,12 @@ services:
                             test:1:1,
                             dataretrieval-postprocess:1:1,
                             postprocess-dataretrieval:1:1,
-                            "
-
-networks:
-  default:
-    external:
-      name: nsa
+                            LoginSuccessMessage:1:1,
+                            RegisterSuccessMessage:1:1,
+                            KafkaLoginMessage:1:1,
+                            KafkaRegisterMessage:1:1,
+                            messagehandler-dataretrieval:1:1,
+                            messagehandler-sessionmgmt:1:1,
+                            sessionmgmt-messagehandler:1:1,
+                            post_process:1:1,
+                          "
