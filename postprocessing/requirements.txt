@@ -1,0 +1,7 @@
+numpy 
+pandas
+scipy
+netCDF4
+kafka
+kafka-python
+matplotlib
