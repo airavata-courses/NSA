@@ -1,0 +1,12 @@
+version: '3'
+
+networks:
+  default:
+    external:
+      name: nsa
+
+services:
+  data-retrieval:
+    build: .
+    ports:
+      - '9093:9092'
