@@ -51,7 +51,7 @@ class Login extends React.Component {
       .then(res => {
         console.log(res.data);
         if (res.data == "success") {
-          this.props.changeView();
+          this.props.changeToDashboard();
         }
       });
   };
@@ -59,7 +59,7 @@ class Login extends React.Component {
   render() {
     return (
       <Form className="login-form" onSubmit={this.handleSubmit}>
-        <h1>LOGIN PORTAL</h1>
+        <div className="h1">Login Portal</div>
         <FormGroup>
           <Label>name</Label>
           <Input
@@ -91,7 +91,7 @@ class Login extends React.Component {
           Or continue with your social account
         </div>
         <FacebookLoginButton className="mt-3 mb-3" /> */}
-        <Button className="btn-lg btn-dark btn-block">Register</Button>
+        <Button className="btn-lg btn-dark btn-block" onClick={this.props.changeToRegister}>Register</Button>
       </Form>
     );
   }

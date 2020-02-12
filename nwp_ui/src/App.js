@@ -14,21 +14,29 @@ class App extends React.Component {
     super(props);
     this.state = {
       curr_view: props => (
-        <Dashboard {...props} changeView={this.changeToDashboard} />
+        <Login changeToDashboard={this.changeToDashboard} changeToRegister={this.changeToRegister}/>
       )
     };
   }
   changeToDashboard = () => {
     this.setState({
-      curr_view: props => <Dashboard {...props} />
+      curr_view: props => (<Dashboard changeToLogin={this.changeToLogin}/>)
     });
   };
 
-  // changeToLogin() {
-  //   this.setState({
-  //     curr_view: <Login changeToDashboard={this.changeToDashboard} />
-  //   });
-  // }
+  changeToLogin = () => {
+    this.setState({
+      curr_view: props => (
+          <Login changeToDashboard={this.changeToDashboard} changeToRegister={this.changeToRegister}/>
+          )
+    });
+  }
+
+  changeToRegister = () => {
+    this.setState({
+      curr_view: props => (<Register changeToLogin={this.changeToLogin}/>)
+    });
+  }
 
   render() {
     return (
@@ -45,6 +53,7 @@ class App extends React.Component {
         <div>
           {/* <Route path="/" component={this.state.curr_view} exact /> */}
           <Route path="/" render={this.state.curr_view} />
+          {/*{this.state.curr_view}*/}
         </div>
       </Router>
     );

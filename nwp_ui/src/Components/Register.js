@@ -110,6 +110,9 @@ class Register extends Component {
         <Button className="btn-lg btn-dark btn-block" type="submit">
           Register
         </Button>
+        <Button className="btn-lg btn-dark btn-block" onClick={this.props.changeToLogin}>
+          Back to login
+        </Button>
       </Form>
     );
   }

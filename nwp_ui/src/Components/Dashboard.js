@@ -1,9 +1,9 @@
 import React from "react";
 
-import "../App.css";
+// import "../App.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Button} from "reactstrap";
+import {Button, Form} from "reactstrap";
 import Select from "react-select";
 import axios from "axios";
 
@@ -71,7 +71,7 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-     <div>
+     <Form className="dashboard-form">
          Welcome to the dashboard
          <div>
              Date:
@@ -88,13 +88,14 @@ class Dashboard extends React.Component {
                  options={this.state.options}
              />
          </div>
-       <div>
-           <Button onClick={this.wrapData}>
+           <Button className="btn-lg btn-dark btn-block" onClick={this.wrapData}>
                Forecast!
            </Button>
-       </div>
+             <Button className="btn-lg btn-dark btn-block" onClick={this.props.changeToLogin}>
+                 Back to Login
+             </Button>
 
-     </div>
+     </Form>
     );
   }
 }

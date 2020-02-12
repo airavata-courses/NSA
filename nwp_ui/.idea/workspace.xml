@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41d44f5e-4ce8-462b-b0dd-7eda0181a556" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../KafkaConsumer/target/classes/META-INF/maven/com.nsa/KafkaConsumer/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../KafkaConsumer/target/classes/META-INF/maven/com.nsa/KafkaConsumer/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +62,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

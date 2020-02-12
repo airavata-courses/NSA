@@ -14,6 +14,14 @@
   height: 100px;
 }
 
+.dashboard-form {
+  width: 100%;
+  max-width: 450px;
+  padding: 15px;
+  margin: auto;
+  height: 100px;
+}
+
 .landing-page {
   width: 100%;
   max-width: 600px;
