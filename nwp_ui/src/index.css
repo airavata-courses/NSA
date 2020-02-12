@@ -1,0 +1,23 @@
+.login-form {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  height: 100px;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 450px;
+  padding: 15px;
+  margin: auto;
+  height: 100px;
+}
+
+.landing-page {
+  width: 100%;
+  max-width: 600px;
+  padding: 15px;
+  margin: auto;
+  height: 100px;
+}
