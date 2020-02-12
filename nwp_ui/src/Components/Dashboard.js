@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Button} from "reactstrap";
 import Select from "react-select";
+import axios from "axios";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -48,8 +49,11 @@ class Dashboard extends React.Component {
         let month = dateISO.substring(5,7);
         let day = dateISO.substring(8, 10);
         let radarID = this.state.radarID.value;
-        let message = year + ' ' + month + ' ' + day + ' ' + radarID + ' ' + this.state.user.userName
+        let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userName];
         console.log(message)
+        axios.post("http://localhost:8081/dataretrieval", message).then(res=>{
+            console.log(res.data);
+        });
     };
 
 
