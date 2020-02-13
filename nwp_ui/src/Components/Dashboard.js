@@ -1,9 +1,8 @@
-import React from "react";
-
+import React, {useState} from "react";
 // import "../App.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Button, Form} from "reactstrap";
+import {Button, Form, Alert} from "reactstrap";
 import Select from "react-select";
 import axios from "axios";
 
@@ -24,8 +23,21 @@ class Dashboard extends React.Component {
                 {value: 'KINX', label: 'KINX'},
             ],
             image: null,
-        }
+            alerts: null,
+        };
 
+    };
+
+    FutureDateAlert = (props) => {
+        // const [visible, setVisible] = useState(true);
+        // const onDismiss = () => setVisible(false);
+
+        return (
+            <Alert color="danger">
+
+                Please select a date in the past.
+            </Alert>
+        );
     }
     // handleChange = event => {
     //   this.setState({ name: event.target.value });
@@ -53,6 +65,13 @@ class Dashboard extends React.Component {
 
 
     wrapData = () => {
+        let yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        let difference = this.state.date.getTime() - yesterday.getTime();
+        if(difference > 86400){
+            this.setState({alerts: this.FutureDateAlert()});
+            return;
+        }
         let dateISO = this.state.date.toISOString();
         let year = dateISO.substring(0,4);
         let month = dateISO.substring(5,7);
@@ -84,6 +103,9 @@ class Dashboard extends React.Component {
     render() {
         return (
             <Form className="dashboard-form">
+                <div>
+                    {this.state.alerts}
+                </div>
                 Welcome to the dashboard
                 <div>
                     Date:
