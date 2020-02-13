@@ -21,7 +21,7 @@ user_management_command = [
 ]
 
 user_interface_command = [
-   'yarn', 'start'
+   'npm', 'start'
 
 ]
 
