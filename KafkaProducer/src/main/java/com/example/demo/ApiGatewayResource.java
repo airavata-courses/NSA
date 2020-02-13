@@ -24,7 +24,7 @@ public class ApiGatewayResource {
 	KafkaTemplate<String,String> kafkaTemplate;
 	private static final String TOPIC_LOGIN_MESSAGE= "KafkaLoginMessage";
 	private static final String TOPIC_REGISTER_MESSAGE= "KafkaRegisterMessage";
-	private static final String TOPIC_DATARETRIVE_MESSAGE= "messagehandler-dataretreival";
+	private static final String TOPIC_DATARETRIVE_MESSAGE= "messagehandler-dataretrieval";
 	
 	@Autowired
 	KafkaListenerRegisterFeeback registerAckService;
@@ -44,7 +44,7 @@ public class ApiGatewayResource {
 		System.out.println("ack is"+ack);
 		System.out.println("condition is"+ ack.equalsIgnoreCase("checking"));
 	//	while(ack.equalsIgnoreCase("checking")) {
-		TimeUnit.SECONDS.sleep(10);
+		TimeUnit.SECONDS.sleep(2);
 		ack= loginAckService.returnFeedback();
 		//}
 		return ack;
@@ -59,7 +59,7 @@ public class ApiGatewayResource {
 		System.out.println("ack is"+ack);
 		System.out.println("condition is"+ ack.equalsIgnoreCase("failure"));
 	//	while(ack.equalsIgnoreCase("checking")) {
-		TimeUnit.SECONDS.sleep(10);
+		TimeUnit.SECONDS.sleep(2);
 		ack= registerAckService.returnFeedback();
 		
 		return ack;
@@ -77,7 +77,7 @@ public class ApiGatewayResource {
 		System.out.println("ack is"+ack);
 		System.out.println("condition is"+ ack.equalsIgnoreCase("failure"));
 	//	while(ack.equalsIgnoreCase("checking")) {
-		TimeUnit.SECONDS.sleep(10);
+		TimeUnit.SECONDS.sleep(2);
 		ack= dataAckService.returnFeedback();
 		
 		return ack;
