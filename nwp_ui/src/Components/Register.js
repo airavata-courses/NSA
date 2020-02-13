@@ -48,7 +48,7 @@ class Register extends Component {
       .then(res => {
         console.log(res.data);
         if (res.data == "success") {
-          this.props.changeView();
+          this.props.views.login();
         }
       });
   };
@@ -110,7 +110,7 @@ class Register extends Component {
         <Button className="btn-lg btn-dark btn-block" type="submit">
           Register
         </Button>
-        <Button className="btn-lg btn-dark btn-block" onClick={this.props.changeToLogin}>
+        <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.login}>
           Back to login
         </Button>
       </Form>

@@ -51,7 +51,7 @@ class Login extends React.Component {
       .then(res => {
         console.log(res.data);
         if (res.data == "success") {
-          this.props.changeToDashboard();
+          this.props.views.dashboard();
         }
       });
   };
@@ -91,7 +91,7 @@ class Login extends React.Component {
           Or continue with your social account
         </div>
         <FacebookLoginButton className="mt-3 mb-3" /> */}
-        <Button className="btn-lg btn-dark btn-block" onClick={this.props.changeToRegister}>Register</Button>
+        <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.register}>Register</Button>
       </Form>
     );
   }
