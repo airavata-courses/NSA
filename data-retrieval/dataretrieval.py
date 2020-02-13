@@ -20,11 +20,13 @@ conn = nexradaws.NexradAwsInterface()
 
 try:
     for message in consumer:
-        arr = message.value.split()
+        print('mesage.value',message.value)
+        arr = message.value.strip('\"[]').split()
         years = arr[2]
         months = arr[1]
         days = arr[0]
         radars = arr[3]
+        print(years, months, days, radars)
         scans = conn.get_avail_scans(years, months, days, radars)
 
         templocation = tempfile.mkdtemp()

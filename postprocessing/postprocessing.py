@@ -37,7 +37,10 @@ try:
             display.plot_range_ring(radar.range['data'][-1] / 1000., ax=ax)
             display.set_limits(xlim=(-500, 500), ylim=(-500, 500), ax=ax)
             counter += 1
-            plt.savefig("output/"+str(counter)+".png")
+            plot_name = os.path.join(
+                os.getcwd(), "output", str(counter) + '.png')
+            print('saving plot to', plot_name)
+            plt.savefig(plot_name)
 
         outputString = os.path.join(os.getcwd(),"output", str(counter) + '.png')
 
