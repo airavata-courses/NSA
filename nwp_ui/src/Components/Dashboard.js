@@ -19,27 +19,36 @@ class Dashboard extends React.Component {
                 emailId: "null"
             },
             radarID: 'KIND',
-            options : [
+            options: [
                 {value: 'KIND', label: 'KIND'},
                 {value: 'KINX', label: 'KINX'},
-            ]
+            ],
+            image: null,
         }
 
     }
-  // handleChange = event => {
-  //   this.setState({ name: event.target.value });
-  // };
+    // handleChange = event => {
+    //   this.setState({ name: event.target.value });
+    // };
 
     handleDateChange = date => {
         this.setState({date},
             () => console.log(`Date selected:`, this.state.date)
-            );
+        );
     };
 
     handleRadarChange = radarID => {
         this.setState({radarID},
             () => console.log(`Radar selected:`, this.state.radarID)
-            );
+        );
+    }
+
+    displayImage = () => {
+        this.setState({
+            image: <img src={require('../1.png')}/>
+        //     image:
+        // <div>lol</div>
+    });
     }
 
 
@@ -52,7 +61,10 @@ class Dashboard extends React.Component {
         let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userName];
         console.log(message)
         axios.post("http://localhost:8081/dataretrieval", message).then(res=>{
-            console.log(res.data);
+            console.log("res.data",res.data);
+            if(res.data == 'success'){
+                this.displayImage();
+            }
         });
     };
 
@@ -69,38 +81,40 @@ class Dashboard extends React.Component {
     //   }
     // });
 
-  render() {
-    return (
-     <Form className="dashboard-form">
-         Welcome to the dashboard
-         <div>
-             Date:
-             <DatePicker
-                 selected={this.state.date}
-                 onChange={this.handleDateChange}
-             />
-         </div>
-         <div>
-             RadarID:
-             <Select
-                 value={this.state.radarID}
-                 onChange={this.handleRadarChange}
-                 options={this.state.options}
-             />
-         </div>
-           <Button className="btn-lg btn-dark btn-block" onClick={this.wrapData}>
-               Forecast!
-           </Button>
-         <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.history}>
-             History
-         </Button>
-             <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.login}>
-                 Back to Login
-             </Button>
-
-     </Form>
-    );
-  }
+    render() {
+        return (
+            <Form className="dashboard-form">
+                Welcome to the dashboard
+                <div>
+                    Date:
+                    <DatePicker
+                        selected={this.state.date}
+                        onChange={this.handleDateChange}
+                    />
+                </div>
+                <div>
+                    RadarID:
+                    <Select
+                        value={this.state.radarID}
+                        onChange={this.handleRadarChange}
+                        options={this.state.options}
+                    />
+                </div>
+                <Button className="btn-lg btn-dark btn-block" onClick={this.wrapData}>
+                    Forecast!
+                </Button>
+                <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.history}>
+                    History
+                </Button>
+                <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.login}>
+                    Back to Login
+                </Button>
+                <div>
+                    {this.state.image}
+                </div>
+            </Form>
+        );
+    }
 }
 
 export default Dashboard;

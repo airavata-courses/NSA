@@ -20,6 +20,7 @@ public class KafkaListenerDataRetrieval {
 		if(message.equals(resp)) {
 			System.out.println("The post processing feeback message is success? "+message);
 			postProcessAckMsg="success";
+			System.out.println("Message set to: " + postProcessAckMsg);
 		}else {
 			System.out.println("The post processing feeback message is failed? "+message);	
 			postProcessAckMsg="fail";
