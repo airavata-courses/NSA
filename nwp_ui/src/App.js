@@ -8,33 +8,46 @@ import { FacebookLoginButton } from "react-social-login-buttons";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Dashboard from "./Components/Dashboard";
+import History from "./Components/History";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      views: {
+        dashboard: this.changeToDashboard,
+        register: this.changeToRegister,
+        login: this.changeToLogin,
+        history: this.changeToHistory,
+      },
       curr_view: props => (
-        <Login changeToDashboard={this.changeToDashboard} changeToRegister={this.changeToRegister}/>
+        <Login views={this.state.views}/>
       )
     };
   }
+
+  changeToHistory = () => {
+    this.setState({
+      curr_view: props => (<History views={this.state.views} />)
+    })
+  }
   changeToDashboard = () => {
     this.setState({
-      curr_view: props => (<Dashboard changeToLogin={this.changeToLogin}/>)
+      curr_view: props => (<Dashboard views={this.state.views}/>)
     });
   };
 
   changeToLogin = () => {
     this.setState({
       curr_view: props => (
-          <Login changeToDashboard={this.changeToDashboard} changeToRegister={this.changeToRegister}/>
+          <Login views={this.state.views}/>
           )
     });
   }
 
   changeToRegister = () => {
     this.setState({
-      curr_view: props => (<Register changeToLogin={this.changeToLogin}/>)
+      curr_view: props => (<Register views={this.state.views} />)
     });
   }
 
