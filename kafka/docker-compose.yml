@@ -28,4 +28,9 @@ services:
                             messagehandler-sessionmgmt:1:1,
                             sessionmgmt-messagehandler:1:1,
                             post_process:1:1,
+                            login-sessionmgmt:1:1,
+                            register-sessionmgmt:1:1,
+                            dataretrieval-sessionmgmt:1:1,
+                            postprocess-sessionmgmt:1:1,
+                            sessionhistory-ui:1:1,
                           "

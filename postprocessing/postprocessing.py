@@ -52,14 +52,15 @@ try:
         print('sent', outputString, 'to postprocess-messagehandler')
 
 
+        sess_producer = KafkaProducer(
+            bootstrap_servers = bootstrap_servers,
+            retries = 5,
+            value_serializer=lambda m: json.dumps(m).encode('utf-8'))
+        ack = sess_producer.send('postprocess-sessionmgmt', value = plot_name)
+
 except KeyboardInterrupt:
     sys.exit()
 print('main')
 
-
 if consumer is not None:
     consumer.close()
-
-metadata = ack.get()
-print(metadata.topic)
-print(metadata.partition)

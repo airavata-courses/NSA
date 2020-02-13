@@ -3,20 +3,30 @@ const uuidv1 = require("uuid/v1");
 const crypto = require("crypto");
 const { ObjectId } = mongoose.Schema;
 
-
-const sessSchema = new mongoose.Schema({
-    sessID: {
+var sessionSchema = new mongoose.Schema({
+  sessID: {
         type: ObjectId,
-        required: true
+        required: false
     },
-    action: {
-        type: String,
-        required: true
-    },
-    timeStamp: {
-        type: Date,
-        default: Date.now()
-    }
+  userID: {
+    type: String,
+    required: true
+  },
+  input: {
+    type: JSON,
+    required: true
+  },
+  output: {
+    type: String
+  },
+  status:{
+    type: String,
+    default:'None'
+  },
+  timeStamp: {
+    type: Date,
+    default: Date.now()
+}
 });
-
-module.exports = mongoose.model("Session", sessSchema);
+sessionSchema.set('timestamps', true);
+module.exports = mongoose.model('session-mgmt', sessionSchema);

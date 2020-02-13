@@ -26,6 +26,8 @@ try:
         months = arr[1]
         days = arr[0]
         radars = arr[3]
+        userID = arr[4]
+
         print(years, months, days, radars)
         scans = conn.get_avail_scans(years, months, days, radars)
 
@@ -39,6 +41,11 @@ try:
         jsonObj = {"scans": data}
 
         print("{} downloads failed.".format(results.failed_count))
+        if results.failed_count == 0:
+            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"status":"success"}
+        else:
+            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"status":"failed"}
+
 
         producer = KafkaProducer()
         ack = producer.send('dataretrieval-postprocess', json.dumps(jsonObj).encode('utf-8'))
@@ -50,6 +57,13 @@ try:
         metadata = ack.get()
         print(metadata.topic)
         print(metadata.partition)
+
+        sess_producer = KafkaProducer()
+        sess_ack = sess_producer.send('dataretrieval-sessionmgmt', json.dumps(jsonSession).encode('utf-8'))
+        sess_producer = KafkaProducer(
+            bootstrap_servers = bootstrap_servers,
+            retries = 5,
+            value_serializer=lambda m: json.dumps(m).encode('ascii'))
 
 except KeyboardInterrupt:
     sys.exit()
