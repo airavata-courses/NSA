@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Alert} from "reactstrap";
 
 import { FacebookLoginButton } from "react-social-login-buttons";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -10,7 +10,8 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "Shivali"
+      userName: "Shivali",
+      alerts: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,12 +54,18 @@ class Login extends React.Component {
         if (res.data == "success") {
           this.props.views.dashboard();
         }
+        else {
+          this.setState({
+            alerts: <Alert color="danger">Login Failed</Alert>
+          })
+        }
       });
   };
 
   render() {
     return (
       <Form className="login-form" onSubmit={this.handleSubmit}>
+        {this.state.alerts}
         <div className="h1">Login Portal</div>
         <FormGroup>
           <Label>name</Label>
