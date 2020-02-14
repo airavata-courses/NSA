@@ -29,4 +29,4 @@ var sessionSchema = new mongoose.Schema({
 }
 });
 sessionSchema.set('timestamps', true);
-module.exports = mongoose.model('session-mgmt', sessionSchema);
+module.exports = mongoose.model('sessionmgmt', sessionSchema);

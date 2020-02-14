@@ -33,4 +33,5 @@ services:
                             dataretrieval-sessionmgmt:1:1,
                             postprocess-sessionmgmt:1:1,
                             sessionhistory-ui:1:1,
+                            ui-sessionhistory:1:1,
                           "

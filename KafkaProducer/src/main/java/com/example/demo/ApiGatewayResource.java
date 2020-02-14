@@ -1,8 +1,11 @@
 package com.example.demo;
 
+import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.common.requests.ApiVersionsResponse;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ public class ApiGatewayResource {
 	private static final String TOPIC_LOGIN_MESSAGE= "KafkaLoginMessage";
 	private static final String TOPIC_REGISTER_MESSAGE= "KafkaRegisterMessage";
 	private static final String TOPIC_DATARETRIVE_MESSAGE= "messagehandler-dataretrieval";
+	private static final String TOPIC_SESSION_MESSAGE = "ui-sessionhistory";
 	
 	@Autowired
 	KafkaListenerRegisterFeeback registerAckService;
@@ -32,6 +36,12 @@ public class ApiGatewayResource {
 	KafkaListenerLoginFeeback loginAckService;
 	@Autowired
 	KafkaListenerDataRetrieval dataAckService;
+	@Autowired
+	KafkaListenerSessionFeedback sessionAckService;
+
+	
+	  @Autowired KafkaTemplate<String,SessionRequestTemplate> kafkaTemplateSession;
+	  
 	
 	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value="/login", method = RequestMethod.POST, consumes = "application/json")
@@ -80,6 +90,27 @@ public class ApiGatewayResource {
 		TimeUnit.SECONDS.sleep(2);
 		ack= dataAckService.returnFeedback();
 		
+		return ack;
+	}
+	
+
+	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@RequestMapping(value = "/sessionmgmt"/* , method = RequestMethod.POST, consumes = "application/json" */)
+	public String sessionManagement(/* @RequestBody String sessionDetails */)
+			throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
+		
+	
+		SessionRequestTemplate request= new SessionRequestTemplate("shivali","shiv","shiv","shiv");
+		
+		System.out.println(" Entered the session mgmt method in api gateway "+request); // message will be username
+		System.out.println(kafkaTemplateSession.send(TOPIC_SESSION_MESSAGE, request));
+		
+		String ack = sessionAckService.returnFeedback();
+		System.out.println("ack is" + ack);
+		System.out.println("condition is" + ack.equalsIgnoreCase("failure"));
+		TimeUnit.SECONDS.sleep(10);
+		ack = sessionAckService.returnFeedback();
+
 		return ack;
 	}
 	

@@ -10,8 +10,12 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< Updated upstream
       userName: "Shivali",
       alerts: null
+=======
+      name: "name"
+>>>>>>> Stashed changes
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

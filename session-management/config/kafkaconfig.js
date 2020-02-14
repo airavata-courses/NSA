@@ -4,8 +4,8 @@ client = new kafka.KafkaClient();
 consumer = new Consumer(
   client,
   [
-    { topic: "login-sessionmgmt", partition: 0 },
-    { topic: "register-sessionmgmt", partition: 0 },
+    { topic: "ui-sessionhistory", partition: 0 },
+    { topic: "sessionhistory-ui", partition: 0 },
     { topic: "dataretrieval-sessionmgmt", partition: 0 },
     { topic: "postprocess-sessionmgmt", partition: 0 }
   ],

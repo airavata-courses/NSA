@@ -22,7 +22,9 @@ try:
         print(type(message))
 
         # result = json.loads(message.value)
+        print(message.value)
         result = message.value['scans']
+        res = message.value['pp']
 
         counter = 0
 
@@ -50,13 +52,17 @@ try:
             value_serializer=lambda m: json.dumps(m).encode('utf-8'))
         ack = producer.send('postprocess-messagehandler', value=outputString)
         print('sent', outputString, 'to postprocess-messagehandler')
+        print('before',res)
+        res["status"]=outputString
+        res["output"]=plot_name
+        print('after',res)
 
 
         sess_producer = KafkaProducer(
             bootstrap_servers = bootstrap_servers,
             retries = 5,
             value_serializer=lambda m: json.dumps(m).encode('utf-8'))
-        ack = sess_producer.send('postprocess-sessionmgmt', value = plot_name)
+        ack = sess_producer.send('postprocess-sessionmgmt', value = res)
 
 except KeyboardInterrupt:
     sys.exit()

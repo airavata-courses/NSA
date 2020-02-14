@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser')
 var cors = require('cors')
 const consumer = require('./config/kafkaconfig').consumer;
+const producer = require("./config/kafkaconfig").producer;
 const calls= require('./sessionservice/sessioncontroller');
 
 var Session = require('./models/sessionmodel');
@@ -28,23 +29,41 @@ MongoClient.connect(url, function(err, db) {
 
 consumer.on('message', function(message) {
     
-    //if (message.topic == 'login-sessionmgmt') {
-    //  calls.createdata(message);
-   // }
-    //if (message.topic == 'dataretrieval-sessionmgmt') {
-    //  calls.updateinputdata(message)
-
-    //}
-    if (message.topic == 'dataretrieval-sessionmgmt') {
-      calls.updatetest(message)
+    if (message.topic == 'postprocess-sessionmgmt') {
+      var msg= JSON.parse(message.value);
+      dbo.collection("session").insertOne(msg,function(err,res){
+        if (err) throw err;
+        console.log('1 doc inserted')
+      });
     }
-      else if (message.topic == 'postprocess-sessionmgmt') {
-      calls.updateoutputandState(message)
-    }
-     else if (message.topic == 'sessionhistory-ui'){
-       calls.history(message)
+     else if (message.topic == 'ui-sessionhistory'){
+       console.log("inside ui-sess");
+       let data=JSON.parse(message.value);
+       dbo.collection('session'),function(err,collection)
+       {
+         let myoutput = collection.find({userID:data["userID"]});
+         console.log('retrieved',data);
+         publish(myoutput, 'sessionhistory_ui');
+       }
      }
   });
+
+  function publish(msg, topicName) {
+    msg = JSON.stringify(msg);
+    let payloads = [
+      {
+        topic: 'sessionhistory-ui',
+        messages: msg
+      }
+    ];
+    producer.send(payloads, (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("sent new");
+      }
+    });
+  }
 
 sess.get('/', function(req, res){
    if(req.session.page_views){

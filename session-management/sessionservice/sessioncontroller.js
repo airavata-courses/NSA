@@ -7,7 +7,8 @@ async function createdata(msg) {
     session = new Session(data);
     console.log(data);
     console.log(session)
-    await session.save();
+    let x = await session.save();
+    console.log("hey",x)
   } catch (err) {
     console.log(err.message);
   }
@@ -16,9 +17,13 @@ async function createdata(msg) {
 async function updatetest(msg) {
   let data = JSON.parse(msg.value);
   try {
+    console.log("inside updatetest")
+    console.log('data');
     session = new Session(data);
     console.log(data);
     console.log(session)
+    let x = await session.save();
+    console.log("hey",x)
     await session.save();
   } catch (err) {
     console.log(err.message);
@@ -29,7 +34,7 @@ async function updateinputdata(msg) {
   let data = JSON.parse(msg.value);
   try { 
     console.log(data);
-    filter={"user":data["user"]}
+    filter={"userID":data["userID"]}
     update={"input":data["input"],"output" : "","status":data["status"]}
     let session = await Session.updateOne(filter, update,{new:true}); 
   } catch (err) {

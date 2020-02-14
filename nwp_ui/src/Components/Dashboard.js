@@ -12,7 +12,7 @@ class Dashboard extends React.Component {
         this.state = {
             date: new Date(),
             user: {
-                userName: "sj",
+                userName: "shivali",
                 firstName: "shiv",
                 lastName: "Jejurkar",
                 emailId: "null"

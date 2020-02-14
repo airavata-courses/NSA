@@ -38,15 +38,16 @@ try:
         for scan in results.iter_success():
             print("{} volume scan time {}".format(scan.radar_id,scan.scan_time))
             data.append(scan.filepath)
-        jsonObj = {"scans": data}
+        jsonObj = {"scans": data,"pp":{"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"output":"","status":"success"}}
+        
 
         print("{} downloads failed.".format(results.failed_count))
         if results.failed_count == 0:
-            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"status":"success"}
+            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"output":"","status":"success"}
         else:
-            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"status":"failed"}
+            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"output":"","status":"failed"}
 
-
+        print(jsonObj)
         producer = KafkaProducer()
         ack = producer.send('dataretrieval-postprocess', json.dumps(jsonObj).encode('utf-8'))
         producer = KafkaProducer(
@@ -58,6 +59,7 @@ try:
         print(metadata.topic)
         print(metadata.partition)
 
+    
         sess_producer = KafkaProducer()
         sess_ack = sess_producer.send('dataretrieval-sessionmgmt', json.dumps(jsonSession).encode('utf-8'))
         sess_producer = KafkaProducer(
