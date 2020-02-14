@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181"
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "
+                            test:1:1,
+                            dataretrieval-postprocess:1:1,
+                            postprocess-dataretrieval:1:1,
+                            LoginSuccessMessage:1:1,
+                            RegisterSuccessMessage:1:1,
+                            KafkaLoginMessage:1:1,
+                            KafkaRegisterMessage:1:1,
+                            messagehandler-dataretrieval:1:1,
+                            messagehandler-sessionmgmt:1:1,
+                            sessionmgmt-messagehandler:1:1,
+                            post_process:1:1,
+                            login-sessionmgmt:1:1,
+                            register-sessionmgmt:1:1,
+                            dataretrieval-sessionmgmt:1:1,
+                            postprocess-sessionmgmt:1:1,
+                            sessionhistory-ui:1:1,
+                            ui-sessionhistory:1:1,
+                          "
