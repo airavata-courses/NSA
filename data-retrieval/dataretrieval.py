@@ -6,7 +6,7 @@ import tempfile
 from datetime import datetime
 import json
 
-bootstrap_servers = ['localhost:9092']
+bootstrap_servers = ['kafka:9092']
 
 consumer = KafkaConsumer(
     'messagehandler-dataretrieval',
@@ -48,24 +48,25 @@ try:
             jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"output":"","status":"failed"}
 
         print(jsonObj)
-        producer = KafkaProducer()
-        ack = producer.send('dataretrieval-postprocess', json.dumps(jsonObj).encode('utf-8'))
+
         producer = KafkaProducer(
             bootstrap_servers = bootstrap_servers,
             retries = 5,
             value_serializer=lambda m: json.dumps(m).encode('ascii'))
-
+        ack = producer.send('dataretrieval-postprocess', json.dumps(jsonObj).encode('utf-8'))
         metadata = ack.get()
         print(metadata.topic)
         print(metadata.partition)
 
-    
-        sess_producer = KafkaProducer()
-        sess_ack = sess_producer.send('dataretrieval-sessionmgmt', json.dumps(jsonSession).encode('utf-8'))
         sess_producer = KafkaProducer(
             bootstrap_servers = bootstrap_servers,
             retries = 5,
             value_serializer=lambda m: json.dumps(m).encode('ascii'))
+        sess_ack = sess_producer.send('dataretrieval-sessionmgmt', json.dumps(jsonSession).encode('utf-8'))
+        metadata_sess = sess_ack.get()
+        print(metadata_sess.topic)
+        print(metadata_sess.partition)
+
 
 except KeyboardInterrupt:
     sys.exit()
