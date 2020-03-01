@@ -53,7 +53,7 @@ try:
             bootstrap_servers = bootstrap_servers,
             retries = 5,
             value_serializer=lambda m: json.dumps(m).encode('ascii'))
-        ack = producer.send('dataretrieval-postprocess', json.dumps(jsonObj).encode('utf-8'))
+        ack = producer.send('dataretrieval-postprocess', jsonObj)
         metadata = ack.get()
         print(metadata.topic)
         print(metadata.partition)
@@ -62,7 +62,7 @@ try:
             bootstrap_servers = bootstrap_servers,
             retries = 5,
             value_serializer=lambda m: json.dumps(m).encode('ascii'))
-        sess_ack = sess_producer.send('dataretrieval-sessionmgmt', json.dumps(jsonSession).encode('utf-8'))
+        sess_ack = sess_producer.send('dataretrieval-sessionmgmt', jsonSession)
         metadata_sess = sess_ack.get()
         print(metadata_sess.topic)
         print(metadata_sess.partition)
