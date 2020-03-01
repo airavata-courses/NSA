@@ -1,42 +1,22 @@
 sudo: required
-dist: trusty
 
-install:
-  - >
-    curl -sSL "https://get.docker.com/gpg" |
-     sudo -E apt-key add -
-  - >
-    echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" |
-     sudo tee -a /etc/apt/sources.list
-  - sudo apt-get update
-  - >
-    sudo apt-get -o Dpkg::Options::="--force-confdef" \
-     -o Dpkg::Options::="--force-confold" --assume-yes install docker-engine
-  - docker version
-  
-  - sudo pip install docker-compose
-  - docker-compose version
+services:
+  - docker
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.17.1
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - docker-compose up --build -d
+  - docker-compose up -d --build
 
 script:
-  - echo "Running fron TRAVIS CI"
+  - echo "Hi from Travis"
 
 after_script:
   - docker-compose down -v
-
-
-# language: java
-# jdk:
-#   - oraclejdk13
-
-# script:
-#   - cd consumer
-#   - mvn clean install
-#   - cd ..
-#   - cd producer
-#   - mvn clean install
-#   - cd ..
-#   - cd admin
-#   - mvn clean install
