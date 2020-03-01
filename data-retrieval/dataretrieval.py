@@ -21,31 +21,31 @@ conn = nexradaws.NexradAwsInterface()
 try:
     for message in consumer:
         print('mesage.value',message.value)
-        arr = message.value.strip('\"[]').split()
-        years = arr[2]
-        months = arr[1]
-        days = arr[0]
-        radars = arr[3]
-        userID = arr[4]
+        #arr = message.value.strip('\"[]').split()
+        years = message.value['year']
+        months = message.value['month']
+        days = message.value['day']
+        radars = message.value['radarID']
+        userName = message.value['userName']
 
         print(years, months, days, radars)
         scans = conn.get_avail_scans(years, months, days, radars)
 
         templocation = tempfile.mkdtemp()
-        results = conn.download(scans[0:2], templocation)
+        results = conn.download(scans[0:1], templocation)
         print(results.success)
         data = []
         for scan in results.iter_success():
             print("{} volume scan time {}".format(scan.radar_id,scan.scan_time))
             data.append(scan.filepath)
-        jsonObj = {"scans": data,"pp":{"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"output":"","status":"success"}}
+        jsonObj = {"scans": data,"pp":{"userName":userName,"month":months,"day":days,"year":years,"radar":radars,"output":"","status":"success"}}
         
 
         print("{} downloads failed.".format(results.failed_count))
         if results.failed_count == 0:
-            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"output":"","status":"success"}
+            jsonSession = {"userName":userName,"month":months,"day":days,"year":years,"radar":radars,"output":"","status":"success"}
         else:
-            jsonSession = {"userID":userID,"input":{"Month":months,"Day":days,"Year":years,"Radar":radars},"output":"","status":"failed"}
+            jsonSession = {"userName":userName,"month":months,"day":days,"year":years,"radar":radars,"output":"","status":"failed"}
 
         print(jsonObj)
 
