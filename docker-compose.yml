@@ -44,11 +44,11 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
     # expose:
     #   - "9092"
-    healthcheck:
-      test: ["CMD", "/opt/kafka/bin/kafka-topics.sh", "--list", "--zookeeper", "zookeeper:2181"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    # healthcheck:
+    #   test: ["CMD", "/opt/kafka/bin/kafka-topics.sh", "--list", "--zookeeper", "zookeeper:2181"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
       # start_period: 15s
 
     volumes:
@@ -57,14 +57,14 @@ services:
       - zookeeper
 
 
-  # data-retrieval:
-  #   build: './data-retrieval'
-  #   networks: 
-  #     - nsa
-  #   depends_on: 
-  #     - kafka
-  #     - zookeeper
-  #   restart: unless-stopped
+  data-retrieval:
+    build: './data-retrieval'
+    # ports:
+    #   - 8084:8084
+    networks: 
+      - nsa
+    depends_on: 
+      - kafka
 
   api_gateway:
     build: './api_gateway'
@@ -127,4 +127,4 @@ networks:
   nsa:
 
 volumes:
-    db_data: {}
+  db_data: {}

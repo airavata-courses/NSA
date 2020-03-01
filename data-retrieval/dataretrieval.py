@@ -1,32 +1,45 @@
-from kafka import KafkaProducer
-from kafka import KafkaConsumer
+from pykafka import KafkaClient
 import nexradaws
 import sys
 import tempfile
 from datetime import datetime
 import json
+# import time
 
-bootstrap_servers = ['kafka:9092']
+# time.sleep(20)
+def data_retrieval(client):
+    # consumer = KafkaConsumer(consumer_timeout_ms=15000)
+    print("Creating kafka consumer")
+    try:
+        # client = KafkaClient(
+        #     hosts=bootstrap_servers,
+        #     )
+        topic = client.topics['messagehandler-dataretrieval']
+        consumer = topic.get_simple_consumer()
+    except:
+        print("Could not create kafka consumer. Exiting.")
+        sys.exit()
+    if consumer is not None:
+        print("Created kafka consumer")
+    conn = nexradaws.NexradAwsInterface()
 
-consumer = KafkaConsumer(
-    'messagehandler-dataretrieval',
-     bootstrap_servers=bootstrap_servers,
-     auto_offset_reset='earliest',
-     enable_auto_commit=True,
-     group_id='group1',
-     value_deserializer=lambda x: json.loads(x.decode('utf-8')))
-
-conn = nexradaws.NexradAwsInterface()
-
-try:
-    for message in consumer:
+    # try:
+    message = consumer.consume()
+    while message:
         print('mesage.value',message.value)
         #arr = message.value.strip('\"[]').split()
-        years = message.value['year']
-        months = message.value['month']
-        days = message.value['day']
-        radars = message.value['radarID']
-        userName = message.value['userName']
+        msg_val = message.value.decode("utf-8")
+        years = msg_val['year']
+        months = msg_val['month']
+        days = msg_val['day']
+        radars = msg_val['radarID']
+        userName = msg_val['userName']
+
+        # years = message.value['year']
+        # months = message.value['month']
+        # days = message.value['day']
+        # radars = message.value['radarID']
+        # userName = message.value['userName']
 
         print(years, months, days, radars)
         scans = conn.get_avail_scans(years, months, days, radars)
@@ -49,28 +62,64 @@ try:
 
         print(jsonObj)
 
-        producer = KafkaProducer(
-            bootstrap_servers = bootstrap_servers,
-            retries = 5,
-            value_serializer=lambda m: json.dumps(m).encode('ascii'))
-        ack = producer.send('dataretrieval-postprocess', jsonObj)
-        metadata = ack.get()
-        print(metadata.topic)
-        print(metadata.partition)
-
-        sess_producer = KafkaProducer(
-            bootstrap_servers = bootstrap_servers,
-            retries = 5,
-            value_serializer=lambda m: json.dumps(m).encode('ascii'))
-        sess_ack = sess_producer.send('dataretrieval-sessionmgmt', jsonSession)
-        metadata_sess = sess_ack.get()
-        print(metadata_sess.topic)
-        print(metadata_sess.partition)
+        topic = client.topics['dataretrieval-postprocess']
+        producer = topic.get_sync_producer()
+        producer.produce(bytes(json.dumps(jsonObj), 'utf-8'))
 
 
-except KeyboardInterrupt:
-    sys.exit()
-print('main')
+        # producer = KafkaProducer(
+        #     bootstrap_servers = bootstrap_servers,
+        #     retries = 5,
+        #     value_serializer=lambda m: json.dumps(m).encode('ascii'))
+        # ack = producer.send('dataretrieval-postprocess', jsonObj)
+        # metadata = ack.get()
+        # print(metadata.topic)
+        # print(metadata.partition)
 
-if consumer is not None:
-    consumer.close()
+        # sess_producer = KafkaProducer(
+        #     bootstrap_servers = bootstrap_servers,
+        #     retries = 5,
+        #     value_serializer=lambda m: json.dumps(m).encode('ascii'))
+
+        # sess_ack = sess_producer.send('dataretrieval-sessionmgmt', jsonSession)
+        # metadata_sess = sess_ack.get()
+        # print(metadata_sess.topic)
+        # print(metadata_sess.partition)
+        producer.produce(bytes(json.dumps(jsonSession), 'utf-8'))            
+
+    # except KeyboardInterrupt:
+    #     sys.exit()
+    # print('main')
+    if consumer is not None:
+        consumer.close()
+
+    
+
+def test_kafka():
+    print("Attempting to connect to kafka")
+    
+
+
+# def main():
+print("Welcome to data_retrival")
+bootstrap_servers = 'kafka:9092'
+temp = False
+while temp == False:
+    try:
+        client = KafkaClient(hosts=bootstrap_servers)
+        topic = client.topics['test']
+        consumer = topic.get_simple_consumer()
+        # if consumer1 is not None:
+        # consumer1.close()
+        print("Connected to kafka")
+        temp = True
+
+    except:
+        print("Failed kafka test")
+        temp =  False
+    print("Failed connecting to kafka. Retrying.")
+    # time.sleep(2)
+
+data_retrieval(client)
+
+# main()
