@@ -11,8 +11,8 @@ services:
   kafka:
     image: wurstmeister/kafka
     command: [start-kafka.sh]
-    expose:
-      - 9092
+    # expose:
+    #   - 9092
     ports:
       - "9092:9092"
     networks: 
@@ -38,17 +38,13 @@ services:
                             ui-sessionhistory:1:1,
                           "
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_PORT: 9092
-      KAFKA_ADVERTISED_LISTENER: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_HOST_NAME: kafka
-    # expose:
-    #   - "9092"
-    healthcheck:
-      test: ["CMD", "/opt/kafka/bin/kafka-topics.sh", "--list", "--zookeeper", "zookeeper:2181"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "kafka:9092"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
       # start_period: 15s
 
     volumes:
@@ -57,14 +53,21 @@ services:
       - zookeeper
 
 
-  # data-retrieval:
-  #   build: './data-retrieval'
+  data-retrieval:
+    build: './data-retrieval'
+    networks: 
+      - nsa
+    depends_on: 
+      - kafka
+    restart: on-failure
+
+  # kafka_check:
+  #   image: dadarek/wait-for-dependencies
   #   networks: 
   #     - nsa
-  #   depends_on: 
+  #   depends_on:
   #     - kafka
-  #     - zookeeper
-  #   restart: unless-stopped
+  #   command: kafka:9092
 
   api_gateway:
     build: './api_gateway'
@@ -121,7 +124,7 @@ services:
   #     - kafka
   #     - zookeeper
   #     - data-retrieval
-  #   restart: unless-stopped
+  #   restart: on-failure
 
 networks: 
   nsa:
