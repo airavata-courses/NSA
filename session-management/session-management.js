@@ -16,7 +16,7 @@ var sess = express();
 sess.use(bodyParser());
 sess.use(cookieParser());
 sess.use(cors());
-sess.use(session({secret: "secret!"}));
+// sess.use(session({secret: "secret!"}));
 
 consumer.on('message', function(message) {
   
