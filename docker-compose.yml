@@ -77,6 +77,15 @@ services:
       - nsa
     depends_on:
       - kafka
+
+  session-management:
+    build: './session-management'
+    ports:
+      - 3002:3002
+    networks:
+      - nsa
+    depends_on:
+      - kafka
   
   user_management:
     build: './user_management'
