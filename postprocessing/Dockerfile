@@ -1,16 +1,16 @@
-FROM python:3
+FROM python:3-onbuild
 
 ADD postprocessing.py /
 ADD pyart-master /
-RUN pip3 install numpy 
-RUN pip3 install pandas
-RUN pip3 install scipy
-RUN pip3 install netCDF4
-RUN pip3 install kafka
-RUN pip3 install kafka-python
-RUN pip3 install matplotlib
 
-RUN python3 /pyart-master/setup.py build
-RUN python3 /pyart-master/setup.py install --user
+
+RUN pip install --upgrade pip
+ADD requirements.txt /
+RUN pip3 install -r requirements.txt
+
+RUN python /pyart-master/setup.py build
+RUN python /pyart-master/setup.py install --user
+
+RUN echo "RUN DONE"
 
 CMD [ "python3", "./postprocessing.py" ]
