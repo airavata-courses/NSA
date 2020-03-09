@@ -1,0 +1,47 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - 2181:2181
+    hostname: zookeeper
+    networks: 
+      - nsa
+
+  kafka:
+    image: wurstmeister/kafka
+    command: [start-kafka.sh]
+    ports:
+      - "9092:9092"
+    networks: 
+      - nsa
+    environment:
+      KAFKA_CREATE_TOPICS: "
+                            test:1:1,
+                            dataretrieval-postprocess:1:1,
+                            postprocess-dataretrieval:1:1,
+                            LoginSuccessMessage:1:1,
+                            RegisterSuccessMessage:1:1,
+                            KafkaLoginMessage:1:1,
+                            KafkaRegisterMessage:1:1,
+                            messagehandler-dataretrieval:1:1,
+                            messagehandler-sessionmgmt:1:1,
+                            sessionmgmt-messagehandler:1:1,
+                            post_process:1:1,
+                            login-sessionmgmt:1:1,
+                            register-sessionmgmt:1:1,
+                            dataretrieval-sessionmgmt:1:1,
+                            postprocess-sessionmgmt:1:1,
+                            sessionhistory-ui:1:1,
+                            ui-sessionhistory:1:1,
+                          "
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+
+networks: 
+  nsa:
