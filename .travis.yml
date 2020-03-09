@@ -1,13 +1,15 @@
 language: java
 jdk:
   - oraclejdk13
-
+before-script:
+  - cd user_management/KafkaConsumer
 script:
-  - cd consumer
-  - mvn clean install
-  - cd ..
-  - cd producer
-  - mvn clean install
-  - cd ..
-  - cd admin
-  - mvn clean install
+  - mvn -Dmaven.test.skip test-compile jar:test-jar install
+  - echo "Insert Test case here"
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker build -t nsa/user_management:latest .
+  - docker push nsa/user_management:latest
+branches:
+  only:
+  - feature/user-management
