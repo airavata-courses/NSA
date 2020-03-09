@@ -53,13 +53,18 @@ services:
       - zookeeper
 
 
-  data-retrieval:
+  data_retrieval:
     build: './data-retrieval'
+    depends_on:
+      - kafka
     networks: 
       - nsa
-    depends_on: 
-      - kafka
     restart: on-failure
+  
+  dr_test:
+    build: './dr_test'
+    networks: 
+      - nsa
 
   # kafka_check:
   #   image: dadarek/wait-for-dependencies
@@ -123,6 +128,14 @@ services:
       - nsa
     depends_on:
       - db
+  
+  user_interface:
+    build: ./nwp_ui
+    networks:
+      - nsa
+    ports:
+      - 3000:3000
+
 
 
   # postprocessing:

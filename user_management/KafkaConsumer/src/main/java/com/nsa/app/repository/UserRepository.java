@@ -10,15 +10,10 @@ import com.nsa.app.model.User;
 
 @Repository("userRepository")
 public interface UserRepository extends CrudRepository<User,Integer>{
-	
-	//@Query("Select password User u where u.username =:username")	
 	User findByuserName (String userName);
 	 
-	 User findByLastName (String username);
+	User findByLastName (String username);
 	 
-	 boolean existsById (int id);
+	boolean existsById (int id);
 	 
-	 //boolean save(User user);
-	 
-
 }

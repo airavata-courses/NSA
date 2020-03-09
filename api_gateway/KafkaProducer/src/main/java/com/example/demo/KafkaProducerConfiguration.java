@@ -17,6 +17,8 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import com.google.gson.JsonArray;
 
+
+
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.json.JSONArray;
@@ -24,13 +26,19 @@ import org.json.JSONObject;
 
 @Configuration
 public class KafkaProducerConfiguration {
+	
+	public static String LOGIN_SUCCESS="LOGIN_SUCCESS";
+	public static String LOGIN_FAIL="LOGIN_FAIL";
+	
+	public static String REGISTER_SUCCESS="REGISTER_SUCCESS";
+	public static String REGISTER_FAIL="REGISTER_FAIL";
 
 	@Bean 
 	public  ProducerFactory producerFactory(){
 		
 		Map<String,Object> config= new HashMap<>();
 		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"kafka:9092" );
-		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,JsonSerializer.class );
+		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,StringSerializer.class );
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,JsonSerializer.class );
 				
 		return new DefaultKafkaProducerFactory<>(config);
@@ -40,14 +48,17 @@ public class KafkaProducerConfiguration {
 	
 	
 	@Bean
-	public KafkaTemplate<String,String> kafkaTemplate(){
-		return new KafkaTemplate<String,String>(producerFactory());
+	public KafkaTemplate<String,User> kafkaTemplateLoginRegister(){
+		return new KafkaTemplate<String,User>(producerFactory());
 	}
 	
 
 	  @Bean public KafkaTemplate<String,SessionRequestTemplate> kafkaTemplateSession(){ return
 	  new KafkaTemplate<String,SessionRequestTemplate>(producerFactory()); }
 	 
+	  @Bean public KafkaTemplate<String,DataRetrievalTemplate> kafkaTemplateDataRetrieval(){ return
+			  new KafkaTemplate<String,DataRetrievalTemplate>(producerFactory()); }
+			 
 	
 	
 	@Bean

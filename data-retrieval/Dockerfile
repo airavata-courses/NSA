@@ -1,8 +1,10 @@
-FROM python:3-onbuild
+FROM python:3.7.3
 
-ADD dataretrieval.py /
 RUN pip3 install --upgrade pip
-ADD requirements.txt /
-RUN pip3 install -r requirements.txt
+WORKDIR /data_retrieval
 
-CMD [ "python3", "./dataretrieval.py" ]
+ADD dataretrieval.py /data_retrieval
+ADD requirements.txt /data_retrieval
+RUN pip3 install -r requirements.txt
+ENV PYTHONUNBUFFERED 0
+CMD [ "python3", "-u", "dataretrieval.py" ]
