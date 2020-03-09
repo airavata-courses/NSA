@@ -5,7 +5,7 @@ before-script:
   - cd api_gateway
 script:
   - cd api_gateway/KafkaProducer
-  - mvn -Dmaven.test.skip test-compile jar:test-jar install
+  # - mvn -Dmaven.test.skip test-compile jar:test-jar install
   - echo "Insert Test case here"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
