@@ -11,7 +11,7 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      userName: "",
       firstName: "",
       lastName: "",
       emailId: "",
@@ -26,28 +26,21 @@ class Register extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const user = {
-      username: this.state.username,
+      userName: this.state.username,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      emailId: this.state.emailId,
+      email: this.state.emailId,
       password: this.state.password
     };
 
+  
+     const jsonobj = JSON.stringify(user);
+
     axios
-      .post("http://localhost:8081/register", [
-        user.username +
-          " " +
-          user.firstName +
-          " " +
-          user.lastName +
-          " " +
-          user.emailId +
-          " " +
-          user.password
-      ])
+      .post("http://localhost:8081/register", JSON.parse(jsonobj))
       .then(res => {
         console.log(res.data);
-        if (res.data == "success") {
+        if (res.data == "REGISTER_SUCCESS") {
           this.props.views.login();
         }
       });
