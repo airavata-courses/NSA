@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
-const uuidv1 = require("uuid/v1");
-const crypto = require("crypto");
 const { ObjectId } = mongoose.Schema;
 
-var sessionSchema = new mongoose.Schema({
+var session = new mongoose.Schema({
   sessID: {
         type: ObjectId,
         required: false
@@ -12,14 +10,30 @@ var sessionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  input: {
-    type: JSON,
-    required: true
+  day: {
+    type: String,
+    required: false
+  },
+  month: {
+    type: String,
+    required: false
+  },
+  year: {
+    type: String,
+    required: false
+  },
+  radarID: {
+    type: String,
+    required: false
   },
   output: {
     type: String
   },
-  status:{
+  jobstatus:{
+    type: String,
+    default:'None'
+  },
+  jobtype:{
     type: String,
     default:'None'
   },
@@ -28,5 +42,5 @@ var sessionSchema = new mongoose.Schema({
     default: Date.now()
 }
 });
-sessionSchema.set('timestamps', true);
-module.exports = mongoose.model('sessionmgmt', sessionSchema);
+session.set('timestamps', true);
+module.exports = mongoose.model('session_data', session);
