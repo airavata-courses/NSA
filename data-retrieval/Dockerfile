@@ -1,9 +1,10 @@
-FROM python:3
+FROM python:3.7.3
 
-ADD dataretrieval.py /
-RUN pip3 install kafka
-RUN pip3 install kafka-python
-RUN pip3 install nexradaws
-RUN echo "RUN DONE"
+RUN pip3 install --upgrade pip
+WORKDIR /data_retrieval
 
-CMD [ "python3", "./dataretrieval.py" ]
+ADD dataretrieval.py /data_retrieval
+ADD requirements.txt /data_retrieval
+RUN pip3 install -r requirements.txt
+ENV PYTHONUNBUFFERED 0
+CMD [ "python3", "-u", "dataretrieval.py" ]
