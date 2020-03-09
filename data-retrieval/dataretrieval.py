@@ -12,14 +12,14 @@ def main():
     # gevent.monkey.patch_all(socket=True, dns=True, time=True, select=True, thread=True, os=True, ssl=True,
     #                         httplib=False, subprocess=True, sys=False, aggressive=True, Event=True, builtins=True,
     #                         signal=True, queue=True)
-    bootstrap_servers = 'kafka:9092'
+    bootstrap_servers = ['kafka:9092']
     print('bootstrap_servers:', bootstrap_servers)
     consumer = None
     print('Attempting to connect to kafka broker')
     while consumer is None:
         try:
             consumer = KafkaConsumer(
-                'test',
+                'messagehandler-dataretrieval',
                 bootstrap_servers=bootstrap_servers,
                 auto_offset_reset='earliest',
                 enable_auto_commit=False,

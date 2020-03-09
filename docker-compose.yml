@@ -13,8 +13,9 @@ services:
     command: [start-kafka.sh]
     # expose:
     #   - 9092
+    hostname: kafka
     ports:
-      - "9092:9092"
+      - 9092:9092
     networks: 
       - nsa
     environment:
@@ -37,9 +38,11 @@ services:
                             sessionhistory-ui:1:1,
                             ui-sessionhistory:1:1,
                           "
+      KAFKA_ADVERTISED_PORT: 9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      # KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://:9092
+      # KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_HOST_NAME: kafka
     # healthcheck:
     #   test: ["CMD", "curl", "-f", "kafka:9092"]
     #   interval: 30s
@@ -53,7 +56,7 @@ services:
       - zookeeper
 
 
-  data_retrieval:
+  data-retrieval:
     build: './data-retrieval'
     depends_on:
       - kafka
@@ -61,10 +64,10 @@ services:
       - nsa
     restart: on-failure
   
-  dr_test:
-    build: './dr_test'
-    networks: 
-      - nsa
+  # dr_test:
+  #   build: './dr_test'
+  #   networks: 
+  #     - nsa
 
   # kafka_check:
   #   image: dadarek/wait-for-dependencies
@@ -150,6 +153,7 @@ services:
 
 networks: 
   nsa:
+    external: true
 
 volumes:
     db_data: {}

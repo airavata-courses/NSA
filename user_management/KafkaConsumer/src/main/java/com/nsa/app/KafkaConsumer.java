@@ -33,7 +33,7 @@ public class KafkaConsumer {
 	@Autowired
 	KafkaTemplate<String,SessionLog> kafkaTemplateSessionLog;
 
-	@KafkaListener(topics="KafkaLoginMessage", groupId ="group_id", containerFactory="userKafkaListenerFactory")
+	@KafkaListener(topics="KafkaLoginMessage", containerFactory="userKafkaListenerFactory")
 	public void consumeLogin(UserInput message) throws JSONException {		
 	
 		System.out.println("message received is in login"+message);
@@ -75,7 +75,7 @@ public class KafkaConsumer {
 	}
 
 	
-	@KafkaListener(topics="KafkaRegisterMessage", groupId ="group_id", containerFactory="userKafkaListenerFactory")
+	@KafkaListener(topics="KafkaRegisterMessage", containerFactory="userKafkaListenerFactory")
 	public void consumeRegister(UserInput message) {
 		
 		System.out.println("Come inside the Kafka consumer register method");
