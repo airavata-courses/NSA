@@ -1,5 +1,7 @@
-FROM openjdk:13-jdk
+FROM maven:3.6.3-jdk-13
 
-ADD user_management.jar /
+ADD KafkaConsumer /
+# WORKDIR /KafkaConsumer
+RUN mvn clean install
 
-CMD [ "java", "-jar", "./user_management.jar" ]
+CMD [ "java", "-jar", "./target/user_management.jar" ]

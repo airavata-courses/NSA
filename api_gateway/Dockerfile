@@ -1,5 +1,7 @@
-FROM openjdk:13-jdk
+FROM maven:3.6.3-jdk-13
 
-ADD api_gateway.jar /
+ADD KafkaProducer /
+# WORKDIR /KafkaProducer
+RUN mvn clean install
 
-CMD [ "java", "-jar", "./api_gateway.jar" ]
+CMD [ "java", "-jar", "./target/api_gateway.jar" ]

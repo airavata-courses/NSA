@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.common.requests.ApiVersionsResponse;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,99 +21,100 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
-//@RequestMapping("kafka")
 public class ApiGatewayResource {
 
-	@Autowired
-	KafkaTemplate<String,String> kafkaTemplate;
 	private static final String TOPIC_LOGIN_MESSAGE= "KafkaLoginMessage";
 	private static final String TOPIC_REGISTER_MESSAGE= "KafkaRegisterMessage";
 	private static final String TOPIC_DATARETRIVE_MESSAGE= "messagehandler-dataretrieval";
 	private static final String TOPIC_SESSION_MESSAGE = "ui-sessionhistory";
 	
-	@Autowired
-	KafkaListenerRegisterFeeback registerAckService;
-	@Autowired
-	KafkaListenerLoginFeeback loginAckService;
-	@Autowired
-	KafkaListenerDataRetrieval dataAckService;
-	@Autowired
-	KafkaListenerSessionFeedback sessionAckService;
-
 	
-	  @Autowired KafkaTemplate<String,SessionRequestTemplate> kafkaTemplateSession;
+	Logger logger = LoggerFactory.getLogger(ApiGatewayResource.class);
+	
+	@Autowired
+	KafkaListenerRegisterFeedback registerAcknowledgement;
+	@Autowired
+	KafkaListenerLoginFeedback loginAcknowledgement;
+	@Autowired
+	KafkaListenerDataRetrieval dataAcknowledgement;
+	@Autowired
+	KafkaListenerSessionFeedback sessionAcknowledgement;
+
+
+	@Autowired
+	KafkaTemplate<String,User> kafkaTemplateLogin;
+	@Autowired
+	KafkaTemplate<String,User> kafkaTemplateRegister;
+	
+	 @Autowired 
+	 KafkaTemplate<String,SessionRequestTemplate> kafkaTemplateSession;
+	 @Autowired 
+	 KafkaTemplate<String,DataRetrievalTemplate> kafkaTemplateDataRetrieval;
 	  
 	
-	@CrossOrigin(origins = "http://ui:3000", maxAge = 3600)
-	@RequestMapping(value="/login", method = RequestMethod.POST, consumes = "application/json")
-	public String login(@RequestBody String message) throws InterruptedException {
-		//String message=user.getFirstName();
-		System.out.println("**************** OTIIII **********"+ message);
-		kafkaTemplate.send(TOPIC_LOGIN_MESSAGE,message);
+	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = "application/json")
+	public String login(@RequestBody User message ) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
+		kafkaTemplateLogin.send(TOPIC_LOGIN_MESSAGE,message);
 		
-		String ack= loginAckService.returnFeedback();
-		System.out.println("ack is"+ack);
-		System.out.println("condition is"+ ack.equalsIgnoreCase("checking"));
-	//	while(ack.equalsIgnoreCase("checking")) {
+		System.out.println("Entered inside the login: "+message );
 		TimeUnit.SECONDS.sleep(2);
-		ack= loginAckService.returnFeedback();
-		//}
+		String ack= loginAcknowledgement.returnFeedback();
+		
 		return ack;
 	}
 	
-	@CrossOrigin(origins = "http://ui:3000", maxAge = 3600)
+	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value="/register", method = RequestMethod.POST, consumes = "application/json")
-	public String register(@RequestBody String message) throws InterruptedException {
-		kafkaTemplate.send(TOPIC_REGISTER_MESSAGE,message);
+	public String register(@RequestBody User message) throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
+		kafkaTemplateRegister.send(TOPIC_REGISTER_MESSAGE,message);
 		
-		String ack= registerAckService.returnFeedback();
-		System.out.println("ack is"+ack);
-		System.out.println("condition is"+ ack.equalsIgnoreCase("failure"));
-	//	while(ack.equalsIgnoreCase("checking")) {
+		System.out.println("Entered inside the register: "+message );
+		
 		TimeUnit.SECONDS.sleep(2);
-		ack= registerAckService.returnFeedback();
+		String ack= registerAcknowledgement.returnFeedback();
 		
 		return ack;
 	}
 
 	
 	
-	@CrossOrigin(origins = "http://ui:3000", maxAge = 3600)
-	@RequestMapping(value="/dataretrieval", method = RequestMethod.POST, consumes = "application/json")
-	public String dataRetrival(@RequestBody String message) throws InterruptedException {
-		kafkaTemplate.send(TOPIC_DATARETRIVE_MESSAGE,message);
-		//Just push the data to message broker for dataa
+	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@RequestMapping(value = "/dataretrieval")
+	public String dataRetrival(@RequestBody DataRetrievalTemplate request) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
 		
-		String ack= dataAckService.returnFeedback();
-		System.out.println("ack is"+ack);
-		System.out.println("condition is"+ ack.equalsIgnoreCase("failure"));
-	//	while(ack.equalsIgnoreCase("checking")) {
+		kafkaTemplateDataRetrieval.send(TOPIC_DATARETRIVE_MESSAGE,request);
+		logger.debug("Request message to data retrieval service is: "+request);
+		
+		String dataRetrievalAck= dataAcknowledgement.returnFeedback();
 		TimeUnit.SECONDS.sleep(2);
-		ack= dataAckService.returnFeedback();
+		dataRetrievalAck= dataAcknowledgement.returnFeedback();
+		logger.debug("Acknowledgement received from data retrieval is "+dataRetrievalAck);
 		
-		return ack;
+		return dataRetrievalAck;
 	}
 	
 
-	@CrossOrigin(origins = "http://ui:3000", maxAge = 3600)
-	@RequestMapping(value = "/sessionmgmt"/* , method = RequestMethod.POST, consumes = "application/json" */)
-	public String sessionManagement(/* @RequestBody String sessionDetails */)
+	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@RequestMapping(value = "/sessionmgmt")
+	public String sessionManagement(/* @RequestBody SessionRequestTemplate request */)
 			throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
-		
 	
+		
+		
+		//Send input received from UI service to data retrieval
 		SessionRequestTemplate request= new SessionRequestTemplate("shivali","shiv","shiv","shiv");
+		logger.debug("Request message to session management service is: "+request);
 		
-		System.out.println(" Entered the session mgmt method in api gateway "+request); // message will be username
-		System.out.println(kafkaTemplateSession.send(TOPIC_SESSION_MESSAGE, request));
 		
-		String ack = sessionAckService.returnFeedback();
-		System.out.println("ack is" + ack);
-		System.out.println("condition is" + ack.equalsIgnoreCase("failure"));
+		//Acknowledgment received from session retrieval service
+		String sessionAck = sessionAcknowledgement.returnFeedback();
 		TimeUnit.SECONDS.sleep(10);
-		ack = sessionAckService.returnFeedback();
+		sessionAck = sessionAcknowledgement.returnFeedback();
 
-		return ack;
+		return sessionAck;
 	}
 	
 	

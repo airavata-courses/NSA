@@ -43,8 +43,24 @@
 			<artifactId>jasper</artifactId>
 			<version>6.0.32</version>
 		</dependency>
-		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
-			<version>2.9.7</version> </dependency> -->
+
+<!-- 
+	 	<dependency>
+   <groupId>com.fasterxml.jackson.core</groupId>
+   <artifactId>jackson-databind</artifactId>
+   <version>2.9.4</version>
+</dependency>
+
+<dependency>
+   <groupId>com.fasterxml.jackson.core</groupId>
+   <artifactId>jackson-core</artifactId>
+   <version>2.9.4</version>
+</dependency>
+<dependency>
+   <groupId>com.fasterxml.jackson.core</groupId>
+   <artifactId>jackson-annotations</artifactId>
+   <version>2.9.4</version>
+</dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -86,6 +102,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>user_management</finalName>
 	</build>
 
 </project>

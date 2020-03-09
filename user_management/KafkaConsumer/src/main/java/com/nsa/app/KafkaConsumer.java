@@ -2,14 +2,20 @@ package com.nsa.app;
 
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.nsa.app.model.User;
+import com.google.gson.JsonParser;
+import com.nsa.app.UserInput;
+import com.nsa.app.model.*;
+
 import com.nsa.app.repository.UserRepository;
 
 @Service
@@ -22,84 +28,72 @@ public class KafkaConsumer {
 	KafkaTemplate<String,String> kafkaTemplate;
 	private static final String TOPIC_LOGIN_ACK= "LoginSuccessMessage";
 	private static final String TOPIC_REGISTER_ACK= "RegisterSuccessMessage";
+	private static final String TOPIC_SESSION_LOG="SessionLog";
+	
+	@Autowired
+	KafkaTemplate<String,SessionLog> kafkaTemplateSessionLog;
 
-	@KafkaListener(topics="KafkaLoginMessage", groupId ="group_id")
-	public void consumeLogin(String message) {
-//		
-		System.out.println("Come inside the Kafka consumer ");
-//		
-//		// Use repository to check database based on the value given from MB to service
-		User answer= userRepository.findByuserName(message);
-		System.out.println("Consumed Message is"+message);
-		String newmessage= message.substring(4,message.length()-4);
+	@KafkaListener(topics="KafkaLoginMessage", groupId ="group_id", containerFactory="userKafkaListenerFactory")
+	public void consumeLogin(UserInput message) throws JSONException {		
+	
+		System.out.println("message received is in login"+message);
 		
-		
-		String [] values= newmessage.split(" ");
-		System.out.println("db check output is"+values);
-		
-		User user= userRepository.findByuserName(values[0]);
-		System.out.println("Values from database: "+userRepository.findByuserName(values[0]));	
-		//boolean userExists=userRepository.existsById(1);
+		String username=message.getUserName();
+		String password=message.getPassword();
+	
+		  User user= userRepository.findByuserName(username);
+		  
+		  
+		  if(user != null ) {
+				System.out.println("db pass "+user.getPassword()+ "db username "+user.getUserName());
+				System.out.println("value pass "+message.getPassword()+ "value username "+message.getUserName());
+				if((user.getPassword().equals(message.getPassword())) && (user.getUserName().equals(message.getUserName()))) {
+					System.out.println("SUCESSS>>>>>>>>>>>>>>>>>>>>>");
+					kafkaTemplate.send(TOPIC_LOGIN_ACK,"LOGIN_SUCCESS");
+					
+					// send message to session-mgmt userid+ login_success
+					 
+					SessionLog sessionLog = new SessionLog();
+					sessionLog.setStatus("LOGIN_SUCCESS");
+					sessionLog.setUserName(username);
+					
+//					JsonObject sessionlogObj = new JsonObject();
+//					sesessionlogObj.put("status","LOGIN_SUCCESS");
 //		
-		if(user != null ) {
-			System.out.println("db pass "+user.getPassword()+ "db username "+user.getUserName());
-			System.out.println("value pass "+values[0]+ "value username "+values[4]);
-			if((user.getPassword().equals(values[4])) && (user.getUserName().equals(values[0]))) {
-				kafkaTemplate.send(TOPIC_LOGIN_ACK,"success");
+					kafkaTemplateSessionLog.send(TOPIC_SESSION_LOG,sessionLog);
+				}
+				else {
+					System.out.println("Faileeeeeeeeeeeeeeeeee");
+					kafkaTemplate.send(TOPIC_LOGIN_ACK,"LOGIN_FAIL");
+				}
 			}
 			else {
-				kafkaTemplate.send(TOPIC_LOGIN_ACK,"fail");
-			}
-		}
-		else {
-			kafkaTemplate.send(TOPIC_LOGIN_ACK,"fail");
-//			// return message
+				System.out.println("HSSKVFPdkl");
+				kafkaTemplate.send(TOPIC_LOGIN_ACK,"LOGIN_FAIL");
+
+		}	
 	}
-//		
-	}
-//	
-//	
+
 	
-	@KafkaListener(topics="KafkaRegisterMessage", groupId ="group_id")
-	public void consumeRegister(String message) {
+	@KafkaListener(topics="KafkaRegisterMessage", groupId ="group_id", containerFactory="userKafkaListenerFactory")
+	public void consumeRegister(UserInput message) {
 		
 		System.out.println("Come inside the Kafka consumer register method");
-		
-		// Use repository to check database based on the value given from MB to service
-		
-		System.out.println("Input for register is "+message);
-		String newmessage= message.substring(4,message.length()-4);
-		String [] values= newmessage.split(" ");
-		System.out.println("db check output is"+values);
+
 		User user = new User();
-		user.setUserName(values[0]);
-		user.setFirstName(values[1]);
-		user.setLastName(values[2]);
-		user.setEmail(values[3]);
-		user.setPassword(values[4]);
+		user.setUserName(message.getUserName());
+		user.setFirstName(message.getFirstName());
+		user.setLastName(message.getLastName());
+		user.setEmail(message.getEmail());
+		user.setPassword(message.getPassword());
 		
-		if(userRepository.findByuserName(values[0])== null) {
+		if(userRepository.findByuserName(message.getUserName())== null) {
 			System.out.println("User doesnot exist, hence ");
-		
 		userRepository.save(user);
-		kafkaTemplate.send(TOPIC_REGISTER_ACK,"success");
+		kafkaTemplate.send(TOPIC_REGISTER_ACK,"REGISTER_SUCCESS");
 		}
 		else {
-			kafkaTemplate.send(TOPIC_REGISTER_ACK,"error");
+			kafkaTemplate.send(TOPIC_REGISTER_ACK,"REGISTER_FAIL");
 		}
 	}
-	
-	
-//	@KafkaListener(topics="KafkaDRMessage", groupId ="group_id")
-//	public void consumeDataRetrieval(String message) {
-//		
-//		System.out.println("Come inside the Kafka consumer data retrieval method");
-//		
-//		// Use repository to check database based on the value given from MB to service
-//		
-//		System.out.println("Input for DATA RETRIEVAL is "+message);
-//		
-//		
-//		
-//	}
 }
