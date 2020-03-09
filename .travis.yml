@@ -1,13 +1,17 @@
-language: java
-jdk:
-  - oraclejdk13
-
+language: python
+python: 3.7
+services:
+- docker
+before-install:
+- cd data-retrieval
+install:
+- pip3 install -r requirements.txt
 script:
-  - cd consumer
-  - mvn clean install
-  - cd ..
-  - cd producer
-  - mvn clean install
-  - cd ..
-  - cd admin
-  - mvn clean install
+- echo "Insert test cases here"
+after-success:
+- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+- docker build -t nsa/data-retrieval:latest .
+- docker push nsa/data-retrieval:latest
+branches:
+only:
+- feature/data-retrieval
