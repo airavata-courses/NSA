@@ -1,13 +1,20 @@
-language: java
-jdk:
-  - oraclejdk13
-
-script:
-  - cd consumer
-  - mvn clean install
-  - cd ..
-  - cd producer
-  - mvn clean install
-  - cd ..
-  - cd admin
-  - mvn clean install
+language: node_js
+sudo: false
+node_js: 10.16
+cache:
+  directories:
+    - "node_modules"
+before-install:
+  - cd nwp_ui
+install:
+  - npm install --check-files
+script: 
+  - npm start
+  - echo "Insert tests here- UI"
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker build -t nsa/nwp_ui:latest .
+  - docker push nsa/nwp_ui:latest
+branches:
+  only:
+  - feature/user-interface
