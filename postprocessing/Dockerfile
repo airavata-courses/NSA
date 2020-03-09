@@ -11,6 +11,4 @@ RUN pip3 install -r requirements.txt
 RUN python /pyart-master/setup.py build
 RUN python /pyart-master/setup.py install --user
 
-RUN echo "RUN DONE"
-
-CMD [ "python3", "./postprocessing.py" ]
+CMD [ "python3", "-u", "./postprocessing.py" ]
