@@ -1,13 +1,16 @@
 language: java
 jdk:
   - oraclejdk13
-
+before-script:
+  - cd api_gateway
 script:
-  - cd consumer
-  - mvn clean install
-  - cd ..
-  - cd producer
-  - mvn clean install
-  - cd ..
-  - cd admin
-  - mvn clean install
+  - cd api_gateway
+  - mvn -Dmaven.test.skip test-compile jar:test-jar install
+  - echo "Insert Test case here"
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker build -t nsa/api_gateway:latest .
+  - docker push nsa/api_gateway:latest
+branches:
+  only:
+  - feature/api-gateway
