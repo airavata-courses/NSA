@@ -1,20 +1,13 @@
-language: node_js
-sudo: false
-node_js: 10.16
-cache:
-  directories:
-    - "node_modules"
-before-install:
-  - cd session-management
-install:
-  - npm install
-script: 
-  - npm start
-  - echo "Insert tests here- session management"
-after_success:
-  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - docker build -t nsa/session-management:latest .
-  - docker push nsa/session-management:latest
-branches:
-  only:
-  - feature/session-management
+language: java
+jdk:
+  - oraclejdk13
+
+script:
+  - cd consumer
+  - mvn clean install
+  - cd ..
+  - cd producer
+  - mvn clean install
+  - cd ..
+  - cd admin
+  - mvn clean install
