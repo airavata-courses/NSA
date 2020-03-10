@@ -11,11 +11,12 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             date: new Date(),
-            user: {
-                userName: "shivali",
-                firstName: "shiv",
-                lastName: "Jejurkar",
-                emailId: "null"
+            dataretrieval_information: {
+                userName: null,
+                month: null,
+                year: null,
+                radarID: null,
+                day: null,
             },
             radarID: {value: 'KIND', label: 'KIND'},
             options: [
@@ -219,8 +220,20 @@ class Dashboard extends React.Component {
         let month = dateISO.substring(5,7);
         let day = dateISO.substring(8, 10);
         let radarID = this.state.radarID.value;
-        let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userName];
-        console.log(message)
+        this.setState(
+            {dataretrieval_information:{
+                userName: this.props.userName,
+                day,
+                radarID,
+                month,
+                year
+            }
+            }, console.log(this.state.dataretrieval_information))
+        // let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userName];
+        
+
+        let message = JSON.stringify(this.state.dataretrieval_information);
+        message = JSON.parse(message);
         axios.post("http://localhost:8081/dataretrieval", message).then(res=>{
             console.log("res.data",res.data);
             if(res.data == 'success'){

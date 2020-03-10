@@ -14,46 +14,6 @@ async function createdata(msg) {
   }
 }
 
-async function updatetest(msg) {
-  let data = JSON.parse(msg.value);
-  try {
-    console.log("inside updatetest")
-    console.log('data');
-    session = new Session(data);
-    console.log(data);
-    console.log(session)
-    let x = await session.save();
-    console.log("hey",x)
-    await session.save();
-  } catch (err) {
-    console.log(err.message);
-  }
-}
-
-async function updateinputdata(msg) {
-  let data = JSON.parse(msg.value);
-  try { 
-    console.log(data);
-    filter={"userID":data["userID"]}
-    update={"input":data["input"],"output" : "","status":data["status"]}
-    let session = await Session.updateOne(filter, update,{new:true}); 
-  } catch (err) {
-    console.log(err.message);
-  }
-}
-
- async function updateoutputandState(msg) {
-  let data = JSON.parse(msg.value);
-  try {
-    console.log(data);
-    filter={"userID":data["userID"]}
-    update={"output":data["output"],"status":"executed"}
-    let session = await Session.updateOne(filter, update,{new:true});
-  } catch (err) {
-    console.log(err.message);
-  }
-}
-
 async function history(msg) {
   let data = JSON.parse(msg.value);
   console.log('retrieved');
@@ -67,7 +27,6 @@ async function history(msg) {
     publish(data, 'sessionhistory_ui');
   }); 
 }
-
 
 function publish(msg, topicName) {
   msg = JSON.stringify(msg);
@@ -85,4 +44,4 @@ function publish(msg, topicName) {
     }
   });
 }
-module.exports = { createdata,updatetest, updateinputdata, updateoutputandState,history };
+module.exports = { createdata,history };

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import pyart
 import os
 
-bootstrap_servers = ['localhost:9092']
+bootstrap_servers = ['kafka:9092']
 consumer = KafkaConsumer(
     'dataretrieval-postprocess',
      bootstrap_servers=bootstrap_servers,
@@ -51,6 +51,9 @@ try:
             retries=5,
             value_serializer=lambda m: json.dumps(m).encode('utf-8'))
         ack = producer.send('postprocess-messagehandler', value=outputString)
+        metadata = ack.get()
+        print(metadata.topic)
+        print(metadata.partition)
         print('sent', outputString, 'to postprocess-messagehandler')
         print('before',res)
         res["status"]=outputString
@@ -62,7 +65,10 @@ try:
             bootstrap_servers = bootstrap_servers,
             retries = 5,
             value_serializer=lambda m: json.dumps(m).encode('utf-8'))
-        ack = sess_producer.send('postprocess-sessionmgmt', value = res)
+        sess_ack = sess_producer.send('postprocess-sessionmgmt', value = res)
+        metadata_sess = sess_ack.get()
+        print(metadata_sess.topic)
+        print(metadata_sess.partition)
 
 except KeyboardInterrupt:
     sys.exit()
