@@ -6,5 +6,3 @@ def get_scans(self,years,months,days,radars):
     print(scans)
     print[scans[0]]
     return scans[0]  
-
-print(get_scans())
