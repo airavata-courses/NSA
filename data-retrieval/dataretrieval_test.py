@@ -1,5 +1,5 @@
 import unittest
-from dataretrieval import get_scans
+from init_test import get_scans
 
 class Tests(unittest.TestCase):
     def dr_test(self):
