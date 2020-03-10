@@ -33,11 +33,16 @@ try:
             display = pyart.graph.RadarDisplay(radar)
             fig = plt.figure(figsize=(6, 5))
 
-            # plot super resolution reflectivity
-            ax = fig.add_subplot(111)
-            display.plot('reflectivity', 0, title='NEXRAD Reflectivity',vmin=-32, vmax=64, colorbar_label='', ax=ax)
-            display.plot_range_ring(radar.range['data'][-1] / 1000., ax=ax)
-            display.set_limits(xlim=(-500, 500), ylim=(-500, 500), ax=ax)
+            # plot super resolution reflectivity and Velocity
+            ax1 = fig.add_subplot(221)
+            display.plot('reflectivity', 0, title='NEXRAD Reflectivity',vmin=-32, vmax=64, colorbar_label='', ax=ax1)
+            display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax1)
+            display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax1)
+            ax2 = fig.add_subplot(222)
+            display.plot('velocity', 1, title='NEXRAD Velocity',vmin=-50, vmax=50, colorbar_label='', ax=ax2)
+            display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax2)
+            display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax2)
+            plt.show()
             counter += 1
             src_folder = os.path.join('..','nwp_ui','src')
             plot_name = os.path.join(src_folder, str(counter) + '.png')
