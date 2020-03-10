@@ -7,7 +7,7 @@ cache:
 before-install:
   - cd session-management
 install:
-  - npm install
+  - npm install --check-files
 script: 
   - npm start
   - echo "Insert tests here - session management"
