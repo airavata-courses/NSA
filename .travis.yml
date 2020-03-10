@@ -7,9 +7,9 @@ cache:
 before-install:
   - cd nwp_ui
 install:
-  - npm install --check-files
+  - travis_wait npm install --check-files
 script: 
-  - npm start
+ # - npm start
   - echo "Insert tests here- UI"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
