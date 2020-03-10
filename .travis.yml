@@ -9,7 +9,7 @@ before-install:
 install:
   - npm install --check-files
 script: 
-  - npm start
+#  - npm start
   - echo "Insert tests here - session management"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
