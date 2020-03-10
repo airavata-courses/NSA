@@ -11,15 +11,11 @@ class Login extends React.Component {
     super(props);
     this.state = {
       alerts: null,
-      name: "name"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // componentDidMount(){
-  //   axios.get('').then(res)
-  // }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -28,31 +24,33 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const user = {
-      username: this.state.name,
+      userName: this.state.name,
       firstName: "null",
       lastName: "null",
       emailId: "null",
       password: this.state.password
     };
 
-    const jsonobj = JSON.stringify(user);
-
+     const jsonobj = JSON.stringify(user);
+    // let msg = [
+    //   user.username +
+    //     " " +
+    //     user.firstName +
+    //     " " +
+    //     user.lastName +
+    //     " " +
+    //     user.emailId +
+    //     " " +
+    //     user.password
+    // ]
+    // message = JSON.parse(message);
+    // console.log(msg);
     axios
-      .post("http://localhost:8081/login", [
-        user.username +
-          " " +
-          user.firstName +
-          " " +
-          user.lastName +
-          " " +
-          user.emailId +
-          " " +
-          user.password
-      ])
+      .post("http://localhost:8081/login", JSON.parse(jsonobj))
       .then(res => {
         console.log(res.data);
-        if (res.data == "success") {
-          this.props.views.dashboard();
+        if (res.data == "LOGIN_SUCCESS") {
+          this.props.views.dashboard(user.userName);
         }
         else {
           this.setState({
