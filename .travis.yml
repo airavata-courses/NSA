@@ -10,7 +10,7 @@ install:
   - npm install
 script: 
   - npm start
-  - echo "Insert tests here- session management"
+  - echo "Insert tests here - session management"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - docker build -t nsa/session-management:latest .
