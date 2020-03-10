@@ -31,9 +31,9 @@ class App extends React.Component {
       curr_view: props => (<History views={this.state.views} />)
     })
   }
-  changeToDashboard = () => {
+  changeToDashboard = (userName) => {
     this.setState({
-      curr_view: props => (<Dashboard views={this.state.views}/>)
+      curr_view: props => (<Dashboard userName={userName} views={this.state.views}/>)
     });
   };
 

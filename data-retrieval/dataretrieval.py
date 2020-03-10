@@ -24,7 +24,7 @@ def main():
                 auto_offset_reset='earliest',
                 enable_auto_commit=False,
                 group_id='group1',
-                # value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+                value_deserializer=lambda x: json.loads(x.decode('utf-8'))
                 )
         except:
             print("Connection to broker failed. Retrying in 1s...")
