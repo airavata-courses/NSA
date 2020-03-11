@@ -1,0 +1,29 @@
+---
+dependencies:
+  - role: kubernetes-apps/ansible
+    tags:
+      - apps
+
+  - role: kubernetes-apps/efk
+    when: efk_enabled
+    tags:
+      - apps
+      - efk
+
+  - role: kubernetes-apps/helm
+    when: helm_enabled
+    tags:
+      - apps
+      - helm
+
+  - role: kubernetes-apps/registry
+    when: registry_enabled
+    tags:
+      - apps
+      - registry
+
+  - role: kubernetes-apps/persistent_volumes
+    when: persistent_volumes_enabled
+    tags:
+      - apps
+      - persistent_volumes
