@@ -3,6 +3,11 @@ package com.example.demo;
 public class SessionRequestTemplate {
 	//\"userID\":\"shivali\",\"sessID\":\"\",\"input\":\"\",\"output"\:\"\",\"status\":\"\",\"timeStamp\":\"\" }"
 	
+
+
+	private String userID;
+
+
 	private String day;
 	private String month;
 	private String year;
@@ -10,6 +15,7 @@ public class SessionRequestTemplate {
 	private String output;
 	private String jobstatus;
 	private String jobtype;
+
 	
 
 	
@@ -26,16 +32,7 @@ public class SessionRequestTemplate {
 		this.jobtype = jobtype;
 		
 	}
-	
 
-	public SessionRequestTemplate(String userID,String jobtype) {
-		super();
-	
-		this.jobtype = jobtype;
-		this.userID = userID;
-	}
-	
-	private String userID;
 	
 	public String getUserID() {
 		return userID;
@@ -86,9 +83,7 @@ public class SessionRequestTemplate {
 		this.jobtype = jobtype;
 	}
 	
-	
-	
-	
-	
-
 }
+	
+	
+	

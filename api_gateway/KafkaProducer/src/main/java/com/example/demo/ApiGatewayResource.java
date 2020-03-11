@@ -58,11 +58,14 @@ public class ApiGatewayResource {
 	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = "application/json")
 	public String login(@RequestBody User message ) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
-		System.out.println("Inside the login controller : "+message );
+
+		System.out.println("Welcome in login : "+message );
 		kafkaTemplateLogin.send(TOPIC_LOGIN_MESSAGE,message);
-		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserName(),"Login");
+		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserName(), "","","","","",
+				"", "login");
 		kafkaTemplateSession.send(TOPIC_SESSION_LOGIN_MESSAGE,request);	
-		System.out.println("Requests sent to session-mgmt and user-mgmt: "+message );
+		System.out.println("Entered inside the login: "+message );
+
 		TimeUnit.SECONDS.sleep(2);
 		String ack= loginAcknowledgement.returnFeedback();
 		
@@ -100,12 +103,13 @@ public class ApiGatewayResource {
 
 	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/sessionmgmt")
+
 	public SessionRequestTemplate sessionManagement( @RequestBody SessionRequestTemplate request )
 			throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		System.out.println("Inside session-mgmt and following is the request: "+request);
 		kafkaTemplateSession.send(TOPIC_SESSION_MESSAGE,request);
 		System.out.println("Request message to session management service is: "+request);
-		
+
 		
 		//Acknowledgment received from session retrieval service
 		SessionRequestTemplate sessionAck = sessionAcknowledgement.returnFeedback();
