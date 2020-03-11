@@ -7,7 +7,7 @@ var cors = require('cors')
 const consumer = require('./config/kafkaconfig').consumer;
 const calls= require('./sessionservice/sessioncontroller');
 dotenv.config()
-
+console.log("hi");
 connectToMongo=require("./config/dbconfig");
 connectToMongo();
 
