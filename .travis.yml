@@ -8,10 +8,10 @@ script:
   - echo "Insert Test case here"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - export REPO=nibafna/user_management
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user_management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -t user_management .
-  - docker tag user_management $REPO:$TAG
+  - export REPO=nibafna/user-management
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -t user-management .
+  - docker tag user-management $REPO:$TAG
   - docker push $REPO:$TAG
 branches:
   only:
