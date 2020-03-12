@@ -10,8 +10,11 @@ script:
 - echo "Insert test cases here"
 after-success:
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker build -t nsa/postprocessing:latest .
-- docker push nsa/postprocessing:latest
+- export REPO=nibafna/postprocessing
+- export TAG=`if [ "$TRAVIS_BRANCH" == "feature/post-processing" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+- docker build -t postprocessing .
+- docker tag postprocessing $REPO:$TAG
+- docker push $REPO:$TAG
 branches:
 only:
 - feature/post-processing
