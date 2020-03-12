@@ -1,4 +1,4 @@
-FROM python
+FROM python:3.7.3
 
 ADD postprocessing.py /
 ADD pyart-master /
@@ -11,6 +11,5 @@ RUN pip3 install -r requirements.txt
 RUN python /pyart-master/setup.py build
 RUN python /pyart-master/setup.py install --user
 
-RUN echo "RUN DONE"
-
-CMD [ "python3", "./postprocessing.py" ]
+ENV PYTHONUNBUFFERED 0
+CMD [ "python3", "-u" , "./postprocessing.py" ]
