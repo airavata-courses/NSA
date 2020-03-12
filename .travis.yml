@@ -12,7 +12,8 @@ script:
 after-success:
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 - docker build -t nsa/data-retrieval:latest .
-- docker push $DOCKER_USER/data-retrieval:latest
+- docker tag nsa/data-retrieval $DOCKER_USER/nsa/data-retrieval:latest
+- docker push $DOCKER_USER/nsa/data-retrieval:latest
 branches:
 only:
 - feature/data-retrieval
