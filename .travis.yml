@@ -2,14 +2,17 @@ language: java
 jdk:
   - oraclejdk13
 before-script:
-  - cd user_management/KafkaConsumer
+  - cd user_management
 script:
 #  - mvn -Dmaven.test.skip test-compile jar:test-jar install
   - echo "Insert Test case here"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - docker build -t nsa/user_management:latest .
-  - docker push nsa/user_management:latest
+  - export REPO=nibafna/user-management
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -t user-management .
+  - docker tag user-management $REPO:$TAG
+  - docker push $REPO:$TAG
 branches:
   only:
   - feature/user-management
