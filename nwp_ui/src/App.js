@@ -26,9 +26,9 @@ class App extends React.Component {
     };
   }
 
-  changeToHistory = () => {
+  changeToHistory = (userName) => {
     this.setState({
-      curr_view: props => (<History views={this.state.views} />)
+      curr_view: props => (<History userName={userName} views={this.state.views} />)
     })
   }
   changeToDashboard = (userName) => {

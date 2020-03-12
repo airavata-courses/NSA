@@ -280,7 +280,7 @@ class Dashboard extends React.Component {
                 <Button className="btn-lg btn-dark btn-block" onClick={this.wrapData}>
                     Forecast!
                 </Button>
-                <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.history}>
+                <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.history(this.state.dataretrieval_information.userName)}>
                     History
                 </Button>
                 <Button className="btn-lg btn-dark btn-block" onClick={this.props.views.login}>
