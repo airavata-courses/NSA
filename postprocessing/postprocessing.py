@@ -62,7 +62,7 @@ try:
         print(metadata.partition)
         print('sent', outputString, 'to postprocess-messagehandler')
         print('before',res)
-        res["status"]=outputString
+        res["jobtype"]="Post-Process"
         res["output"]=plot_name
         print('after',res)
 
