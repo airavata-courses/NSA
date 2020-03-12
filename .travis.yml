@@ -9,12 +9,12 @@ install:
 script:
 - echo "Insert test cases here"
 after-success:
-- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- export REPO=nibafna/post-processing
-- export TAG=`if [ "$TRAVIS_BRANCH" == "feature/post-processing" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-- docker build -t post-processing .
-- docker tag post-processing $REPO:$TAG
-- docker push $REPO:$TAG
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - export REPO=nibafna/post-processing
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/post-processing" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -t post-processing .
+  - docker tag post-processing $REPO:$TAG
+  - docker push $REPO:$TAG
 branches:
 only:
 - feature/post-processing
