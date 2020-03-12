@@ -1,8 +1,0 @@
-matplotlib
-nexradaws
-numpy
-netCDF4
-scipy
-pandas
-kafka-python
-arm-pyart
