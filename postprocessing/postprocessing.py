@@ -8,13 +8,24 @@ import gzip
 import os
 
 bootstrap_servers = ['kafka:9092']
-consumer = KafkaConsumer(
-    'dataretrieval-postprocess',
-     bootstrap_servers=bootstrap_servers,
-     auto_offset_reset='earliest',
-     enable_auto_commit=True,
-     group_id='group1',
-     value_deserializer=lambda x: json.loads(x.decode('utf-8')))
+
+consumer = None
+print('Attempting to connect to kafka broker')
+    while consumer is None:
+        try:
+            consumer = KafkaConsumer(
+                'dataretrieval-postprocess',
+                bootstrap_servers=bootstrap_servers,
+                auto_offset_reset='earliest',
+                enable_auto_commit=False,
+                group_id='group1',
+                value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+                )
+        except:
+            print("Connection to broker failed. Retrying in 1s...")
+            # time.sleep(1)
+        
+    print("Connected to Kafka Broker")
 
 result=[]
 try:

@@ -4,10 +4,10 @@ client = new kafka.KafkaClient({kafkaHost: 'kafka:9092'});
 consumer = new Consumer(
   client,
   [
-    { topic: "login-sessionmgmt", partition: 0 },
-    { topic: "dataretrieval-sessionmgmt", partition: 0 },
-    { topic: "postprocess-sessionmgmt", partition: 0 },
-    { topic: "ui-sessionhistory", partition: 0 }
+    { topic: "login-sessionmgmt"},
+    { topic: "dataretrieval-sessionmgmt"},
+    { topic: "postprocess-sessionmgmt"},
+    { topic: "ui-sessionhistory"}
   ],
   {
     autoCommit: false,

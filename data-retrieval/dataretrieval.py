@@ -19,7 +19,7 @@ def main():
     while consumer is None:
         try:
             consumer = KafkaConsumer(
-                'test',
+                'messagehandler-dataretrieval',
                 bootstrap_servers=bootstrap_servers,
                 auto_offset_reset='earliest',
                 enable_auto_commit=False,
