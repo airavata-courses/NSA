@@ -1,4 +1,4 @@
-FROM python:3-onbuild
+FROM python
 
 ADD postprocessing.py /
 ADD pyart-master /
