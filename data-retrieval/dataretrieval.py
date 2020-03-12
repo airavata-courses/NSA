@@ -42,7 +42,7 @@ def main():
         months = message.value['month']
         days = message.value['day']
         radars = message.value['radarID']
-        userName = message.value['userName']
+        userID = message.value['userID']
 
         print(years, months, days, radars)
         scans = conn.get_avail_scans(years, months, days, radars)
@@ -55,16 +55,16 @@ def main():
             print("{} volume scan time {}".format(
                 scan.radar_id, scan.scan_time))
             data.append(scan.filepath)
-        jsonObj = {"scans": data, "pp": {"userName": userName, "month": months,
-                                        "day": days, "year": years, "radar": radars, "output": "", "status": "success"}}
+        jsonObj = {"scans": data, "pp": {"userID": userID, "month": months,
+                                        "day": days, "year": years, "radarID": radars, "output": "", "jobstatus": "success","jobtype":"Data-Retrieval"}}
 
         print("{} downloads failed.".format(results.failed_count))
         if results.failed_count == 0:
-            jsonSession = {"userName": userName, "month": months, "day": days,
-                        "year": years, "radar": radars, "output": "", "status": "success"}
+            jsonSession = {"userID": userID, "month": months, "day": days,
+                        "year": years, "radarID": radars, "output": "", "jobstatus": "success","jobtype":"Data-Retrieval"}
         else:
-            jsonSession = {"userName": userName, "month": months, "day": days,
-                        "year": years, "radar": radars, "output": "", "status": "failed"}
+            jsonSession = {"userID": userID, "month": months, "day": days,
+                        "year": years, "radarID": radars, "output": "", "jobstatus": "failed","jobtype":"Data-Retrieval"}
 
         print(jsonObj)
 
