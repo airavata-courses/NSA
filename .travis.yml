@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk13
 before-script:
-  - cd api-gateway/KafkaProducer
+  - cd api_gateway/KafkaProducer
 script:
   # - mvn -Dmaven.test.skip test-compile jar:test-jar install
   - echo "Insert Test case here"
