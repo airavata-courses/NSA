@@ -1,7 +1,0 @@
-com/nsa/app/model/User.class
-com/nsa/app/configuration/UserManagementConfiguration.class
-com/nsa/app/repository/UserRepository.class
-com/nsa/app/KafkaConsumer.class
-com/nsa/app/KafkaConsumerApplication.class
-com/nsa/app/UserInput.class
-com/nsa/app/model/SessionLog.class
