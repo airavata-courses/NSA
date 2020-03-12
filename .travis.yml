@@ -2,16 +2,16 @@ language: java
 jdk:
   - oraclejdk13
 before-script:
-  - cd api_gateway/KafkaProducer
+  - cd api-gateway/KafkaProducer
 script:
   # - mvn -Dmaven.test.skip test-compile jar:test-jar install
   - echo "Insert Test case here"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - export REPO=nibafna/api_gateway
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/api_gateway" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -t api_gateway .
-  - docker tag api_gateway $REPO:$TAG
+  - export REPO=nibafna/api-gateway
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/api-gateway" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -t api-gateway .
+  - docker tag api-gateway $REPO:$TAG
   - docker push $REPO:$TAG
 branches:
   only:
