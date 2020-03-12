@@ -13,10 +13,6 @@ script:
   - echo "Insert tests here- UI"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - docker build -t nsa/nwp_ui:latest .
-  - docker push nsa/nwp_ui:latest
-  
-  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - export REPO=nibafna/user-interface
   - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-interface" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker build -t user-interface .
