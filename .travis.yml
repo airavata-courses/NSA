@@ -13,8 +13,11 @@ script:
   - echo "Insert tests here - session management"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - docker build -t nsa/session-management:latest .
-  - docker push nsa/session-management:latest
+  - export REPO=nibafna/session-management
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/session-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -t session-management .
+  - docker tag session-management $REPO:$TAG
+  - docker push $REPO:$TAG
 branches:
   only:
   - feature/session-management
