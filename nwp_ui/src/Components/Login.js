@@ -50,7 +50,11 @@ class Login extends React.Component {
       .then(res => {
         console.log(res.data);
         if (res.data == "LOGIN_SUCCESS") {
+<<<<<<< HEAD
           this.props.views.dashboard();
+=======
+          this.props.views.dashboard(user.userName);
+>>>>>>> feature/session-management-ui
         }
         else {
           this.setState({
