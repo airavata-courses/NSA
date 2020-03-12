@@ -1,7 +1,8 @@
-numpy 
-pandas
-scipy
-netCDF4
-kafka
-kafka-python
 matplotlib
+nexradaws
+numpy
+arm-pyart
+netCDF4
+scipy
+pandas
+kafka-python

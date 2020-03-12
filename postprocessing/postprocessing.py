@@ -4,6 +4,7 @@ import json
 import sys
 import matplotlib.pyplot as plt
 import pyart
+import gzip
 import os
 
 bootstrap_servers = ['kafka:9092']
