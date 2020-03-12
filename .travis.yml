@@ -11,9 +11,11 @@ script:
 - echo "Succesfully ran Test cases for Data retrieval services"
 after-success:
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker build -t nsa/data-retrieval:latest .
-- docker tag nsa/data-retrieval $DOCKER_USER/nsa/data-retrieval:latest
-- docker push $DOCKER_USER/nsa/data-retrieval:latest
+- export REPO=nibafna/data-retrieval
+- export TAG=`if [ "$TRAVIS_BRANCH" == "feature/data-retrieval" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+- docker build -t data-retrieval .
+- docker tag data-retrieval $REPO:$TAG
+- docker push $REPO:$TAG
 branches:
 only:
 - feature/data-retrieval
