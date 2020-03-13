@@ -54,4 +54,4 @@ main = () => {
 }
 
 
-setTimeout(main, 10000);
+setTimeout(main, 60000);
