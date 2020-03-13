@@ -29,6 +29,7 @@ public class ApiGatewayResource {
 	private static final String TOPIC_REGISTER_MESSAGE= "KafkaRegisterMessage";
 	private static final String TOPIC_DATARETRIVE_MESSAGE= "messagehandler-dataretrieval";
 	private static final String TOPIC_SESSION_MESSAGE = "ui-sessionhistory";
+	private static final String TOPIC_SESSION_LOGIN_MESSAGE = "login-sessionmgmt";
 	
 	
 	Logger logger = LoggerFactory.getLogger(ApiGatewayResource.class);
@@ -57,9 +58,14 @@ public class ApiGatewayResource {
 	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = "application/json")
 	public String login(@RequestBody User message ) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
+
+		System.out.println("Welcome in login : "+message );
 		kafkaTemplateLogin.send(TOPIC_LOGIN_MESSAGE,message);
-		
+		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserName(), "","","","","",
+				"", "login");
+		kafkaTemplateSession.send(TOPIC_SESSION_LOGIN_MESSAGE,request);	
 		System.out.println("Entered inside the login: "+message );
+
 		TimeUnit.SECONDS.sleep(2);
 		String ack= loginAcknowledgement.returnFeedback();
 		
@@ -70,9 +76,7 @@ public class ApiGatewayResource {
 	@RequestMapping(value="/register", method = RequestMethod.POST, consumes = "application/json")
 	public String register(@RequestBody User message) throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		kafkaTemplateRegister.send(TOPIC_REGISTER_MESSAGE,message);
-		
 		System.out.println("Entered inside the register: "+message );
-		
 		TimeUnit.SECONDS.sleep(2);
 		String ack= registerAcknowledgement.returnFeedback();
 		
@@ -99,18 +103,16 @@ public class ApiGatewayResource {
 
 	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/sessionmgmt")
-	public String sessionManagement(/* @RequestBody SessionRequestTemplate request */)
+
+	public SessionRequestTemplate sessionManagement( @RequestBody SessionRequestTemplate request )
 			throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
-	
-		
-		
-		//Send input received from UI service to data retrieval
-		SessionRequestTemplate request= new SessionRequestTemplate("shivali","shiv","shiv","shiv");
-		logger.debug("Request message to session management service is: "+request);
-		
+		System.out.println("Inside session-mgmt and following is the request: "+request);
+		kafkaTemplateSession.send(TOPIC_SESSION_MESSAGE,request);
+		System.out.println("Request message to session management service is: "+request);
+
 		
 		//Acknowledgment received from session retrieval service
-		String sessionAck = sessionAcknowledgement.returnFeedback();
+		SessionRequestTemplate sessionAck = sessionAcknowledgement.returnFeedback();
 		TimeUnit.SECONDS.sleep(10);
 		sessionAck = sessionAcknowledgement.returnFeedback();
 
