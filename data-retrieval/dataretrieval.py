@@ -28,7 +28,7 @@ def main():
                 )
         except:
             print("Connection to broker failed. Retrying in 1s...")
-            # time.sleep(1)
+            time.sleep(1)
         
     print("Connected to Kafka Broker")
     conn = nexradaws.NexradAwsInterface()
