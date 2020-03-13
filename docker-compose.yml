@@ -141,15 +141,15 @@ services:
 
 
 
-  # postprocessing:
-  #   build: './postprocessing'
-  #   networks: 
-  #     - nsa
-  #   depends_on: 
-  #     - kafka
-  #     - zookeeper
-  #     - data-retrieval
-  #   restart: on-failure
+  postprocessing:
+    build: './postprocessing'
+    networks: 
+      - nsa
+    depends_on: 
+      - kafka
+      - zookeeper
+      - data-retrieval
+    restart: on-failure
 
 networks: 
   nsa:

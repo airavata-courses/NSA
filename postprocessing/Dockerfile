@@ -5,7 +5,7 @@ ADD postprocessing.py /
 RUN pip install --upgrade pip
 
 RUN pip install matplotlib
-RUN pip install kafka
+RUN pip install kafka-python
 RUN pip install nexradaws
 RUN pip install numpy
 RUN pip install arm-pyart
