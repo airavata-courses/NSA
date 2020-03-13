@@ -1,6 +1,6 @@
 var kafka = require("kafka-node");
 Consumer = kafka.Consumer;
-client = new kafka.KafkaClient({kafkaHost: 'kafka:9092'});
+client = new kafka.KafkaClient({kafkaHost: 'localhost:9092'});
 consumer = new Consumer(
   client,
   [

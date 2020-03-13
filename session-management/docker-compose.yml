@@ -4,8 +4,9 @@ services:
     build: .
     ports:
       - "3002"
+    networks: 
+      - nsa
       
-networks:
-  default:
-    external:
-      name: nsa
+networks: 
+  nsa:
+    external: true
