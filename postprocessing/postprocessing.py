@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import pyart
 import gzip
 import os
+import time
 
 def main():
     bootstrap_servers = ['kafka:9092']
