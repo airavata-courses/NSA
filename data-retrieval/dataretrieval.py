@@ -19,12 +19,12 @@ def main():
     while consumer is None:
         try:
             consumer = KafkaConsumer(
-                'test',
+                'messagehandler-dataretrieval',
                 bootstrap_servers=bootstrap_servers,
                 auto_offset_reset='earliest',
                 enable_auto_commit=False,
                 group_id='group1',
-                # value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+                value_deserializer=lambda x: json.loads(x.decode('utf-8'))
                 )
         except:
             print("Connection to broker failed. Retrying in 1s...")
@@ -85,10 +85,5 @@ def main():
         metadata_sess = sess_ack.get()
         print(metadata_sess.topic)
         print(metadata_sess.partition)
-            # except:
-            #     print("No message yet")
-            #     time.sleep(1)
-
-
 
 main()

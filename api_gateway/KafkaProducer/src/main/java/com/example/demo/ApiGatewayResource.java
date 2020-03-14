@@ -62,7 +62,7 @@ public class ApiGatewayResource {
 		System.out.println("Welcome in login : "+message );
 		kafkaTemplateLogin.send(TOPIC_LOGIN_MESSAGE,message);
 		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserName(), "","","","","",
-				"", "login");
+				"success", "login");
 		kafkaTemplateSession.send(TOPIC_SESSION_LOGIN_MESSAGE,request);	
 		System.out.println("Entered inside the login: "+message );
 

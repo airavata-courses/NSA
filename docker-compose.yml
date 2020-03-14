@@ -116,7 +116,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: db
+      MYSQL_DATABASE: newdb
       MYSQL_USER: user
       MYSQL_PASSWORD: password
   
