@@ -1,5 +1,3 @@
-from kafka import KafkaConsumer
-from kafka import KafkaProducer
 import json
 import sys
 import matplotlib.pyplot as plt
@@ -7,8 +5,39 @@ import pyart
 import gzip
 import os
 import time
+import warnings
 
-def main():
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore",category=DeprecationWarning)
+    import pyart,matplotlib
+
+def plot_radar(filename):
+    counter = 0
+    radar = pyart.io.read_nexrad_archive(filename)
+    display = pyart.graph.RadarDisplay(radar)
+    fig = plt.figure(figsize=(8, 7))
+
+    # plot super resolution reflectivity and Velocity
+    ax1 = fig.add_subplot(221)
+    display.plot('reflectivity', 0, title='NEXRAD Reflectivity',vmin=-32, vmax=64, colorbar_label='', ax=ax1)
+    display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax1)
+    display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax1)
+    ax2 = fig.add_subplot(222)
+    display.plot('velocity', 1, title='NEXRAD Velocity',vmin=-50, vmax=50, colorbar_label='', ax=ax2)
+    display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax2)
+    display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax2)
+    counter += 1
+    src_folder = os.path.join('..','nwp_ui','src')
+    plot_name = os.path.join(src_folder, str(counter) + '.png')
+    print('saving plot to', plot_name)
+    plt.savefig(plot_name)
+    outputString = 'success'
+    return outputString
+
+from kafka import KafkaConsumer
+from kafka import KafkaProducer
+
+def compute():
     bootstrap_servers = ['kafka:9092']
     consumer = None
     while consumer is None:
@@ -35,31 +64,8 @@ def main():
             result = message.value['scans']
             res = message.value['pp']
 
-            counter = 0
-
             for filename in result:
-                radar = pyart.io.read_nexrad_archive(filename)
-                display = pyart.graph.RadarDisplay(radar)
-                fig = plt.figure(figsize=(6, 5))
-
-                # plot super resolution reflectivity and Velocity
-                ax1 = fig.add_subplot(221)
-                display.plot('reflectivity', 0, title='NEXRAD Reflectivity',vmin=-32, vmax=64, colorbar_label='', ax=ax1)
-                display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax1)
-                display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax1)
-                ax2 = fig.add_subplot(222)
-                display.plot('velocity', 1, title='NEXRAD Velocity',vmin=-50, vmax=50, colorbar_label='', ax=ax2)
-                display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax2)
-                display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax2)
-                plt.show()
-                counter += 1
-                src_folder = os.path.join('..','nwp_ui','src')
-                plot_name = os.path.join(src_folder, str(counter) + '.png')
-                print('saving plot to', plot_name)
-                plt.savefig(plot_name)
-
-            # outputString = os.path.join(os.getcwd(),"output", str(counter) + '.png')
-            outputString = 'success'
+                outputString = plot_radar(filename)
             producer = KafkaProducer(
                 bootstrap_servers=bootstrap_servers,
                 retries=5,
@@ -91,4 +97,6 @@ def main():
     if consumer is not None:
         consumer.close()
 
-main()
+if  __name__ == "__main__":
+    print("started post processing service!!")
+    compute()
