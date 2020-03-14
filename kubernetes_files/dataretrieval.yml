@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dataretrieval_service
+  name: dataretrieval-service
 spec:
  type: LoadBalancer
  ports:
@@ -9,25 +9,26 @@ spec:
     port: 5002
     nodePort: 31005
  selector:
-  app: dataretrieval_pod
+  app: dataretrieval-pod
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dataretrieval_deployment
+  name: dataretrieval-deployment
 spec:
   selector:
     matchLabels:
-      app: dataretrieval_pod
+      app: dataretrieval-pod
   replicas: 3
-  strategy: Recreate
+  strategy: 
+   type: Recreate
   template:
     metadata:
       labels:
-        app: dataretrieval_pod
+        app: dataretrieval-pod
     spec:
       containers:
-      - name: dataretrieval_container
+      - name: dataretrieval-container
         imagePullPolicy: Always
         image: nibafna/data-retrieval
         ports:

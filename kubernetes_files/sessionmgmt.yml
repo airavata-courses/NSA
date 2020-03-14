@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sessionmanagement_service
+  name: sessionmanagement-service
 spec:
  type: LoadBalancer
  ports:
@@ -9,25 +9,26 @@ spec:
     port: 5001
     nodePort: 31004
  selector:
-  app: sessionmanagement_pod
+  app: sessionmanagement-pod
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sessionmanagement_deployment
+  name: sessionmanagement-deployment
 spec:
   selector:
     matchLabels:
-      app: sessionmanagement_pod
+      app: sessionmanagement-pod
   replicas: 3
-  strategy: Recreate
+  strategy: 
+   type: Recreate
   template:
     metadata:
       labels:
-        app: sessionmanagement_pod
+        app: sessionmanagement-pod
     spec:
       containers:
-      - name: sessionmanagement_container
+      - name: sessionmanagement-container
         imagePullPolicy: Always
         image: nibafna/session-management
         ports:

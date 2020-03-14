@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postprocess_service
+  name: postprocess-service
 spec:
  type: LoadBalancer
  ports:
@@ -9,25 +9,26 @@ spec:
     port: 5003
     nodePort: 31006
  selector:
-  app: postprocess_pod
+  app: postprocess-pod
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postprocess_deployment
+  name: postprocess-deployment
 spec:
   selector:
     matchLabels:
-      app: postprocess_pod
+      app: postprocess-pod
   replicas: 3
-  strategy: Recreate
+  strategy: 
+   type: Recreate
   template:
     metadata:
       labels:
-        app: postprocess_pod
+        app: postprocess-pod
     spec:
       containers:
-      - name: postprocess_container
+      - name: postprocess-container
         imagePullPolicy: Always
         image: nibafna/post-process
         ports:
