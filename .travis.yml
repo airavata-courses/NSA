@@ -44,7 +44,7 @@ matrix:
       node_js: 10.16
       before_install:
         - cd session-management
-        - rm-rf node_modules/
+        - rm -rf node_modules/
       install:
         - npm install --check-files
       script: 
