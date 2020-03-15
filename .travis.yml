@@ -1,119 +1,119 @@
 matrix:
   include:
     #dataRetrieval
-    language: python
-    python: 3.7
-    services:
-      - docker
-    before-install:
-      - cd data-retrieval
-    install:
-      - pip3 install -r requirements.txt
-    script:
-      - python3 dataretrieval_test.py 
-    after-success:
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - export REPO=nibafna/data-retrieval
-      - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/data-retrieval" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-      - docker build -t data-retrieval .
-      - docker tag data-retrieval $REPO:$TAG
-      - docker push $REPO:$TAG
+    - language: python
+      python: 3.7
+      services:
+        - docker
+      before_install:
+        - cd data-retrieval
+      install:
+        - pip3 install -r requirements.txt
+      script:
+        - python3 dataretrieval_test.py 
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - export REPO=nibafna/data-retrieval
+        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/data-retrieval" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - docker build -t data-retrieval .
+        - docker tag data-retrieval $REPO:$TAG
+        - docker push $REPO:$TAG
 
     #userManagement
-    language: java
-    jdk:
-      - oraclejdk13
-    before-script:
-      - cd user_management
-    script:
-      - mvn -Dmaven.test.skip test-compile jar:test-jar install
-      - echo "Insert Test case here"
-    after_success:
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - export REPO=nibafna/user-management
-      - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-      - docker build -t user-management .
-      - docker tag user-management $REPO:$TAG
-      - docker push $REPO:$TAG
+    - language: java
+      jdk:
+        - oraclejdk13
+      before-script:
+        - cd user_management
+      script:
+        - mvn -Dmaven.test.skip test-compile jar:test-jar install
+        - echo "Insert Test case here"
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - export REPO=nibafna/user-management
+        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - docker build -t user-management .
+        - docker tag user-management $REPO:$TAG
+        - docker push $REPO:$TAG
 
     #sessionManagement
-    language: node_js
-    sudo: false
-    node_js: 10.16
-    cache:
-      directories:
-        - "node_modules"
-    before-install:
-      - cd session-management
-    install:
-      - npm install --check-files
-    script: 
-      - npm test
-    after_success:
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - export REPO=nibafna/session-management
-      - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/session-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-      - docker build -t session-management .
-      - docker tag session-management $REPO:$TAG
-      - docker push $REPO:$TAG
-  
+    - language: node_js
+      sudo: false
+      node_js: 10.16
+      cache:
+        directories:
+          - "node_modules"
+      before_install:
+        - cd session-management
+      install:
+        - npm install --check-files
+      script: 
+        - npm test
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - export REPO=nibafna/session-management
+        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/session-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - docker build -t session-management .
+        - docker tag session-management $REPO:$TAG
+        - docker push $REPO:$TAG
+    
     #apiGateway
-    language: java
-    jdk:
-      - oraclejdk13
-    before-script:
-      - cd api_gateway
-    script:
-      # - mvn -Dmaven.test.skip test-compile jar:test-jar install
-      - echo "Insert Test case here"
-    after_success:
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - export REPO=nibafna/api-gateway
-      - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/api-gateway" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-      - docker build -t api-gateway .
-      - docker tag api-gateway $REPO:$TAG
-      - docker push $REPO:$TAG
+    - language: java
+      jdk:
+        - oraclejdk13
+      before-script:
+        - cd api_gateway
+      script:
+        # - mvn -Dmaven.test.skip test-compile jar:test-jar install
+        - echo "Insert Test case here"
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - export REPO=nibafna/api-gateway
+        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/api-gateway" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - docker build -t api-gateway .
+        - docker tag api-gateway $REPO:$TAG
+        - docker push $REPO:$TAG
 
     #user-interface
-    language: node_js
-    sudo: false
-    node_js: 10.16
-    cache:
-      directories:
-        - "node_modules"
-    before-install:
-      - cd nwp_ui
-    install:
-      - travis_wait npm install --check-files
-    script: 
-    # - npm start
-      - echo "Insert tests here- UI"
-    after_success:
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - export REPO=nibafna/user-interface
-      - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-interface" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-      - docker build -t user-interface .
-      - docker tag user-interface $REPO:$TAG
-      - docker push $REPO:$TAG
-    
+    - language: node_js
+      sudo: false
+      node_js: 10.16
+      cache:
+        directories:
+          - "node_modules"
+      before_install:
+        - cd nwp_ui
+      install:
+        - travis_wait npm install --check-files
+      script: 
+      # - npm start
+        - echo "Insert tests here- UI"
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        - export REPO=nibafna/user-interface
+        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-interface" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - docker build -t user-interface .
+        - docker tag user-interface $REPO:$TAG
+        - docker push $REPO:$TAG
+      
     # Post processing
-    language: python
-    python: 3.7
-    services:
-    - docker
-    before-install:
-    - cd postprocessing
-    install:
-    - pip3 install -r requirements.txt
-    script:
-    - python3 test.py
-    after-success:
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
-      - export REPO=nibafna/post-process
-      - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/post-processing" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-      - docker build -t post-process .
-      - docker tag post-process $REPO:$TAG
-      - docker push $REPO:$TAG
+    - language: python
+      python: 3.7
+      services:
+      - docker
+      before_install:
+      - cd postprocessing
+      install:
+      - pip3 install -r requirements.txt
+      script:
+      - python3 test.py
+      after_success:
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
+        - export REPO=nibafna/post-process
+        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/post-processing" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - docker build -t post-process .
+        - docker tag post-process $REPO:$TAG
+        - docker push $REPO:$TAG
 
 branches:
   only:
