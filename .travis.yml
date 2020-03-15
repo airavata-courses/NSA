@@ -42,9 +42,6 @@ matrix:
     - language: node_js
       sudo: false
       node_js: 10.16
-      cache:
-        directories:
-          - "node_modules"
       before_install:
         - cd session-management
       install:
