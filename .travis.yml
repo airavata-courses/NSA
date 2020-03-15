@@ -18,6 +18,7 @@ matrix:
         - docker build -t data-retrieval .
         - docker tag data-retrieval $REPO:$TAG
         - docker push $REPO:$TAG
+        - cd ../
 
     #userManagement
     - language: java
@@ -35,6 +36,7 @@ matrix:
         - docker build -t user-management .
         - docker tag user-management $REPO:$TAG
         - docker push $REPO:$TAG
+        - cd ../
 
     #sessionManagement
     - language: node_js
@@ -56,6 +58,7 @@ matrix:
         - docker build -t session-management .
         - docker tag session-management $REPO:$TAG
         - docker push $REPO:$TAG
+        - cd ../
     
     #apiGateway
     - language: java
@@ -73,6 +76,7 @@ matrix:
         - docker build -t api-gateway .
         - docker tag api-gateway $REPO:$TAG
         - docker push $REPO:$TAG
+        - cd ../
 
     #user-interface
     - language: node_js
@@ -95,6 +99,7 @@ matrix:
         - docker build -t user-interface .
         - docker tag user-interface $REPO:$TAG
         - docker push $REPO:$TAG
+        - cd ../
       
     # Post processing
     - language: python
@@ -114,6 +119,7 @@ matrix:
         - docker build -t post-process .
         - docker tag post-process $REPO:$TAG
         - docker push $REPO:$TAG
+        - cd ../
 
 branches:
   only:
