@@ -9,6 +9,8 @@ import Login from "./Components/Login";
 import Register from "./Components/Register";
 import Dashboard from "./Components/Dashboard";
 import History from "./Components/History";
+import {GlobalStateProvider} from './useGlobalState';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -63,6 +65,7 @@ class App extends React.Component {
       //   </FormGroup>
       //   <Button className="btn-lg btn-dark btn-block">Register</Button>
       // </Form>
+      <GlobalStateProvider>
       <Router>
         <div>
           {/* <Route path="/" component={this.state.curr_view} exact /> */}
@@ -70,6 +73,7 @@ class App extends React.Component {
           {/*{this.state.curr_view}*/}
         </div>
       </Router>
+      </GlobalStateProvider>
     );
   }
 }

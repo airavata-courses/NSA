@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Button, Form, Alert} from "reactstrap";
 import Select from "react-select";
 import axios from "axios";
+import useGlobalState from '../useGlobalState';
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class Dashboard extends React.Component {
                 radarID: null,
                 day: null,
             },
+            globalState: useGlobalState(),
             radarID: {value: 'KIND', label: 'KIND'},
             options: [
                 {value: 'DAN1', label: 'DAN1'},
@@ -220,9 +222,10 @@ class Dashboard extends React.Component {
         let month = dateISO.substring(5,7);
         let day = dateISO.substring(8, 10);
         let radarID = this.state.radarID.value;
+        let user = this.state.globalState.user;
         this.setState(
             {dataretrieval_information:{
-                userName: this.props.userName,
+                userName: user.userName,
                 day,
                 radarID,
                 month,

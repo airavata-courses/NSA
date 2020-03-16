@@ -5,6 +5,10 @@ import { FacebookLoginButton } from "react-social-login-buttons";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from "axios";
 import App from "../App";
+import useGlobalState from '../useGlobalState';
+
+
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -20,6 +24,12 @@ class Login extends React.Component {
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
+
+  setUserName = userName => {
+  const globalState = useGlobalState();
+  globalState.setUser(userName);
+
+}
 
   handleSubmit = event => {
     event.preventDefault();
@@ -50,7 +60,8 @@ class Login extends React.Component {
       .then(res => {
         console.log(res.data);
         if (res.data == "LOGIN_SUCCESS") {
-          this.props.views.dashboard(user.userName);
+          this.setUserName(res.data.userName);
+          this.props.views.dashboard();
         }
         else {
           this.setState({
