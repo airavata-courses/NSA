@@ -7,18 +7,18 @@ public class DataRetrievalTemplate {
 	private String month;
 	private String year;
 	private String radarID;
-	private String userName;
+	private String userID;
 	
 	
 	public DataRetrievalTemplate( String day, String month, String year, String radarID,
-			String userName) {
+			String userID) {
 		super();
 		
 		this.day = day;
 		this.month = month;
 		this.year = year;
 		this.radarID = radarID;
-		this.userName = userName;
+		this.userID = userID;
 	}
 	
 	
@@ -47,11 +47,11 @@ public class DataRetrievalTemplate {
 	public void setRadarID(String radarID) {
 		this.radarID = radarID;
 	}
-	public String getUserName() {
-		return userName;
+	public String getuserID() {
+		return userID;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setuserID(String userID) {
+		this.userID = userID;
 	}
 	
 	 
