@@ -90,12 +90,12 @@ public class ApiGatewayResource {
 	public String dataRetrival(@RequestBody DataRetrievalTemplate request) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
 		
 		kafkaTemplateDataRetrieval.send(TOPIC_DATARETRIVE_MESSAGE,request);
-		logger.debug("Request message to data retrieval service is: "+request);
+		System.out.println("Request message to data retrieval service is: "+request);
 		
 		String dataRetrievalAck= dataAcknowledgement.returnFeedback();
 		TimeUnit.SECONDS.sleep(2);
 		dataRetrievalAck= dataAcknowledgement.returnFeedback();
-		logger.debug("Acknowledgement received from data retrieval is "+dataRetrievalAck);
+		System.out.println("Acknowledgement received from data retrieval is "+dataRetrievalAck);
 		
 		return dataRetrievalAck;
 	}
