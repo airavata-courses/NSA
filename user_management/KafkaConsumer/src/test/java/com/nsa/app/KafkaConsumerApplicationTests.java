@@ -39,7 +39,7 @@ public class KafkaConsumerApplicationTests {
 //	void contextLoads() {
 //	}
 	
-	
+	/*
 	@MockBean
 	UserRepository userrepo;
 
@@ -76,6 +76,6 @@ public class KafkaConsumerApplicationTests {
 		assertEquals("NikitaB",user.getUserName());
 		
 	}
-	
+	*/
 }
 
