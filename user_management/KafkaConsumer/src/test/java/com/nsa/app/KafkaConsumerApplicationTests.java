@@ -10,14 +10,14 @@ import com.nsa.app.model.User;
 import com.nsa.app.repository.UserRepository;
 import org.junit.*;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.mockito.Mockito.when;
-import org.junit.runner.RunWith;
+//import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,7 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest(classes=ApplicationContext.class)
 @AutoConfigureMockMvc
 public class KafkaConsumerApplicationTests {
