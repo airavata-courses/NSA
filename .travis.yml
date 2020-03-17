@@ -14,7 +14,7 @@ matrix:
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - export REPO=nibafna/data-retrieval
-        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/data-retrieval" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - export TAG=latest
         - docker build -t data-retrieval .
         - docker tag data-retrieval $REPO:$TAG
         - docker push $REPO:$TAG
@@ -32,7 +32,7 @@ matrix:
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - export REPO=nibafna/user-management
-        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - export TAG=latest
         - docker build -t user-management .
         - docker tag user-management $REPO:$TAG
         - docker push $REPO:$TAG
@@ -52,7 +52,7 @@ matrix:
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - export REPO=nibafna/session-management
-        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/session-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - export TAG=latest
         - docker build -t session-management .
         - docker tag session-management $REPO:$TAG
         - docker push $REPO:$TAG
@@ -70,7 +70,7 @@ matrix:
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - export REPO=nibafna/api-gateway
-        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/api-gateway" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - export TAG=latest
         - docker build -t api-gateway .
         - docker tag api-gateway $REPO:$TAG
         - docker push $REPO:$TAG
@@ -93,7 +93,7 @@ matrix:
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - export REPO=nibafna/user-interface
-        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-interface" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - export TAG=latest
         - docker build -t user-interface .
         - docker tag user-interface $REPO:$TAG
         - docker push $REPO:$TAG
@@ -113,7 +113,7 @@ matrix:
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
         - export REPO=nibafna/post-process
-        - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/post-processing" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - export TAG=latest
         - docker build -t post-process .
         - docker tag post-process $REPO:$TAG
         - docker push $REPO:$TAG
