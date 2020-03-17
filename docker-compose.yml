@@ -93,7 +93,10 @@ services:
     networks:
       - nsa
     depends_on:
+      - zookeeper
       - kafka
+      - api_gateway
+      - user_interface
   
   user_management:
     build: './user_management'
