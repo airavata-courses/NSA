@@ -48,9 +48,10 @@ class Login extends React.Component {
     axios
       .post("http://localhost:8081/login", JSON.parse(jsonobj))
       .then(res => {
-        console.log(res.data);
+        console.log("res_data",res.data);
         if (res.data == "LOGIN_SUCCESS") {
-          this.props.views.dashboard(user.userName);
+          this.props.setUserName(this.state.name);
+          this.props.views.dashboard();
         }
         else {
           this.setState({

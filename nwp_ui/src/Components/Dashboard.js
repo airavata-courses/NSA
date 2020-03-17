@@ -256,6 +256,7 @@ class Dashboard extends React.Component {
     // });
 
     render() {
+        console.log(this.props);
         return (
             <Form className="dashboard-form">
                 <div>
