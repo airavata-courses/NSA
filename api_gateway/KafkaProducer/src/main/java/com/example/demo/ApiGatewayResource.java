@@ -59,9 +59,9 @@ public class ApiGatewayResource {
 	@RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = "application/json")
 	public String login(@RequestBody User message ) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
 
-		System.out.println("Welcome in login : "+message );
+		System.out.println("Welcome in login : "+message.getUserID() );
 		kafkaTemplateLogin.send(TOPIC_LOGIN_MESSAGE,message);
-		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserName(), "","","","","",
+		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserID(), "","","","","",
 				"success", "login");
 		kafkaTemplateSession.send(TOPIC_SESSION_LOGIN_MESSAGE,request);	
 		System.out.println("Entered inside the login: "+message );
@@ -76,7 +76,7 @@ public class ApiGatewayResource {
 	@RequestMapping(value="/register", method = RequestMethod.POST, consumes = "application/json")
 	public String register(@RequestBody User message) throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		kafkaTemplateRegister.send(TOPIC_REGISTER_MESSAGE,message);
-		System.out.println("Entered inside the register: "+message );
+		System.out.println("Entered inside the register: "+message.getUserID() );
 		TimeUnit.SECONDS.sleep(2);
 		String ack= registerAcknowledgement.returnFeedback();
 		
