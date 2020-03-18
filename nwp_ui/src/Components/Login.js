@@ -24,7 +24,7 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const user = {
-      userName: this.state.name,
+      userID: this.state.name,
       firstName: "null",
       lastName: "null",
       emailId: "null",
@@ -50,7 +50,7 @@ class Login extends React.Component {
       .then(res => {
         console.log("res_data",res.data);
         if (res.data == "LOGIN_SUCCESS") {
-          this.props.setUserName(this.state.name);
+          this.props.setUserID(this.state.name);
           this.props.views.dashboard();
         }
         else {

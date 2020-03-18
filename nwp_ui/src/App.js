@@ -14,7 +14,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: null,
+      userID: null,
       views: {
         dashboard: this.changeToDashboard,
         register: this.changeToRegister,
@@ -27,18 +27,18 @@ class App extends React.Component {
     };
   }
 
-  setUserName = userName => {
-    this.setState({userName}, console.log(this.state.userName));
+  setUserName = userID => {
+    this.setState({userID}, console.log(this.state.userID));
   }
 
   changeToHistory = () => {
     this.setState({
-      curr_view: props => (<History userName={this.state.userName} views={this.state.views} />)
+      curr_view: props => (<History userID={this.state.userID} views={this.state.views} />)
     })
   }
   changeToDashboard = () => {
     this.setState({
-      curr_view: props => (<Dashboard userName={this.state.userName} views={this.state.views}/>)
+      curr_view: props => (<Dashboard userID={this.state.userID} views={this.state.views}/>)
     });
   };
 

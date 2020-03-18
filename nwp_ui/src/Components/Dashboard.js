@@ -12,7 +12,7 @@ class Dashboard extends React.Component {
         this.state = {
             date: new Date(),
             dataretrieval_information: {
-                userName: null,
+                userID: null,
                 month: null,
                 year: null,
                 radarID: null,
@@ -222,14 +222,14 @@ class Dashboard extends React.Component {
         let radarID = this.state.radarID.value;
         this.setState(
             {dataretrieval_information:{
-                userName: this.props.userName,
+                userID: this.props.userID,
                 day,
                 radarID,
                 month,
                 year
             }
             }, console.log(this.state.dataretrieval_information))
-        // let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userName];
+        // let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userID];
         
 
         let message = JSON.stringify(this.state.dataretrieval_information);
