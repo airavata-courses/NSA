@@ -220,19 +220,19 @@ class Dashboard extends React.Component {
         let month = dateISO.substring(5,7);
         let day = dateISO.substring(8, 10);
         let radarID = this.state.radarID.value;
-        this.setState(
-            {dataretrieval_information:{
-                userID: this.props.userID,
-                day,
-                radarID,
-                month,
-                year
-            }
-            }, console.log(this.state.dataretrieval_information))
+        let dataretrieval_information = {
+            userID: this.props.userID,
+            day,
+            radarID,
+            month,
+            year
+        }
+        this.setState({dataretrieval_information})
+        console.log(dataretrieval_information)
         // let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userID];
         
 
-        let message = JSON.stringify(this.state.dataretrieval_information);
+        let message = JSON.stringify(dataretrieval_information);
         message = JSON.parse(message);
         axios.post("http://localhost:8081/dataretrieval", message).then(res=>{
             console.log("res.data",res.data);
