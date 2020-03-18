@@ -10,7 +10,7 @@ import com.nsa.app.model.User;
 
 @Repository("userRepository")
 public interface UserRepository extends CrudRepository<User,Integer>{
-	User findByuserName (String userName);
+	User findByUserID (String userID);
 	 
 	User findByLastName (String username);
 	 
