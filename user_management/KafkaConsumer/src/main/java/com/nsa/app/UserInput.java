@@ -11,7 +11,7 @@ public class UserInput {
 	private String firstName;
 	
 	
-	private String userID;
+	private String userName;
 	
 	
 	private String lastName;
@@ -41,13 +41,13 @@ public class UserInput {
 	 * }
 	 */
 	
-	public UserInput( String firstName, String lastName, String email,String userID,String password) {
+	public UserInput( String firstName, String lastName, String email,String userName,String password) {
 		super();
 		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.userID=userID;
+		this.userName=userName;
 		this.password=password;
 		
 	}
@@ -80,12 +80,12 @@ public class UserInput {
 		this.email = email;
 	}
 	
-	public String getUserID() {
-		return userID;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 
