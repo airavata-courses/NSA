@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: usermanagement-service
+spec:
+ type: ClusterIP
+ ports:
+  - targetPort: 8082
+    port: 8082
+    protocol: TCP
+ selector:
+  app: usermanagement-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usermanagement-deployment
+spec:
+  selector:
+    matchLabels:
+      app: usermanagement-pod
+  replicas: 1
+  strategy:
+   type: Recreate
+  template:
+    metadata:
+      labels:
+        app: usermanagement-pod
+    spec:
+      containers:
+      - name: usermanagement-container
+        imagePullPolicy: Always
+        image: nibafna/user-management:latest
+        ports:
+        - containerPort: 8082
+      restartPolicy: Always
