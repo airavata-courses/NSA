@@ -22,12 +22,12 @@ class App extends React.Component {
         history: this.changeToHistory,
       },
       curr_view: props => (
-        <Login setUserName={this.setUserName} views={this.state.views}/>
+        <Login setUserID={this.setUserID} views={this.state.views}/>
       )
     };
   }
 
-  setUserName = userID => {
+  setUserID = userID => {
     this.setState({userID}, console.log(this.state.userID));
   }
 
@@ -45,7 +45,7 @@ class App extends React.Component {
   changeToLogin = () => {
     this.setState({
       curr_view: props => (
-          <Login setUserName={this.setUserName} views={this.state.views}/>
+          <Login setUserID={this.setUserID} views={this.state.views}/>
           )
     });
   }
