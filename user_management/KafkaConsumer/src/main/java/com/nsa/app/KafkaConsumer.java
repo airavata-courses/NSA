@@ -36,12 +36,12 @@ public class KafkaConsumer {
 	@KafkaListener(topics="KafkaLoginMessage", containerFactory="userKafkaListenerFactory")
 	public void consumeLogin(UserInput message) throws JSONException {		
 	
-		System.out.println("message received is in login"+message);
+		System.out.println("message received is in login"+message.getUserID());
 		
 		String username=message.getUserID();
 		String password=message.getPassword();
 	
-		  User user= userRepository.findByUserID(username);
+		  User user= userRepository.findByuserID(username);
 		  
 		  
 		  if(user != null ) {
@@ -78,7 +78,7 @@ public class KafkaConsumer {
 	@KafkaListener(topics="KafkaRegisterMessage", containerFactory="userKafkaListenerFactory")
 	public void consumeRegister(UserInput message) {
 		
-		System.out.println("Come inside the Kafka consumer register method");
+		System.out.println("Come inside the Kafka consumer register method"+message.toString());
 
 		User user = new User();
 		user.setUserID(message.getUserID());
@@ -87,9 +87,10 @@ public class KafkaConsumer {
 		user.setEmail(message.getEmail());
 		user.setPassword(message.getPassword());
 		
-		if(userRepository.findByUserID(message.getUserID())== null) {
+		if(userRepository.findByuserID(message.getUserID())== null) {
 			System.out.println("User doesnot exist, hence ");
-			userRepository.save(user);
+			System.out.println("email id is"+message.getEmail());
+			userRepository.save(user); 
 		kafkaTemplate.send(TOPIC_REGISTER_ACK,"REGISTER_SUCCESS");
 		}
 		else {
