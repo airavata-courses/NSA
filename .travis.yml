@@ -61,7 +61,7 @@ matrix:
         - cd ../
         - eval "$(ssh-agent -s)"
         - chmod 600 ./nix-api-key.pub
-        - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+        - echo -e "Host 149.165.170.202\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
         - ssh-add ./nix-api-key.pub
         - ssh -i ./nix-api-key.pub ubuntu@149.165.170.202 pwd
         - echo "Hey" >> test.txt
