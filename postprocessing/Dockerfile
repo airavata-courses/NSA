@@ -13,8 +13,5 @@ RUN pip install netCDF4
 RUN pip install scipy
 RUN pip install pandas
 
-#ADD requirements.txt /
-#RUN pip3 install -r requirements.txt
-
 ENV PYTHONUNBUFFERED 0
 CMD [ "python3", "-u" , "./postprocessing.py" ]
