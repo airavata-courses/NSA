@@ -59,13 +59,12 @@ matrix:
         - docker tag session-management $REPO:$TAG
         - docker push $REPO:$TAG
         - cd ../
+        - chmod 600 ./nix-api-key
         - eval "$(ssh-agent -s)"
-        - chmod 600 ./nix-api-key.pub
-        - echo -e "Host 149.165.170.202\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-        - ssh-add ./nix-api-key.pub
-        - ssh -i ./nix-api-key.pub ubuntu@149.165.170.202 pwd
+        - ssh -o StrictHostKeyChecking=no -i nix-api-key ubuntu@149.165.170.202 uptime
+				- ssh -i nix-api-key ubuntu@149.165.170.111 "sudo apt install gnupg2 pass && 
         - echo "Hey" >> test.txt
-      
+				
     #apiGateway
     - language: java
       jdk:
