@@ -112,7 +112,7 @@ matrix:
       - pip3 install -r requirements.txt
       script:
       - #python3 test.py
-      - echo "test"
+      - echo "Insert test cases here"
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
         - export REPO=nibafna/post-process
