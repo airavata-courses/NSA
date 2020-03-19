@@ -57,7 +57,14 @@ matrix:
         - docker tag session-management $REPO:$TAG
         - docker push $REPO:$TAG
         - cd ../
-    
+      deploy:
+        - eval "$(ssh-agent -s)"
+        - chmod 600 ./deploy_key
+        - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+        - ssh-add ./nix-api-key.pub
+        - ssh -i ./nix-api-key.pub ubuntu@149.165.170.202 pwd
+        - echo "Hey" >> test.txt
+      
     #apiGateway
     - language: java
       jdk:
