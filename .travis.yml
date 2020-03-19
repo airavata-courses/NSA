@@ -59,7 +59,7 @@ matrix:
         - docker tag session-management $REPO:$TAG
         - docker push $REPO:$TAG
         - cd ../
-				
+
     #apiGateway
     - language: java
       jdk:
