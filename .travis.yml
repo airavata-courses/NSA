@@ -57,7 +57,6 @@ matrix:
         - docker tag session-management $REPO:$TAG
         - docker push $REPO:$TAG
         - cd ../
-      deploy:
         - eval "$(ssh-agent -s)"
         - chmod 600 ./deploy_key
         - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
