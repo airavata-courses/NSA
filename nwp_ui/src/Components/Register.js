@@ -37,7 +37,7 @@ class Register extends Component {
      const jsonobj = JSON.stringify(user);
 
     axios
-      .post("http://localhost:8081/register", JSON.parse(jsonobj))
+      .post("http://apigateway:8081/register", JSON.parse(jsonobj))
       .then(res => {
         console.log(res.data);
         if (res.data == "REGISTER_SUCCESS") {
