@@ -20,10 +20,14 @@ matrix:
         - docker push $REPO:$TAG
         - cd ../
         - eval "$(ssh-agent -s)"
+        - sudo chmod 600 ~/.ssh/*
+        - sudo chmod 644 ~/.ssh/config
         - chmod 600 ./cloud.pub
+        - chmod 600 ./cloud
         - echo -e "Host 149.165.170.202\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
         - ssh-add ./cloud.pub
-        - ssh -i ./cloud.pub ubuntu@149.165.170.202 pwd
+        - ssh-add ./cloud
+        - ssh -i ./cloud ubuntu@149.165.170.202 pwd
         - echo "Hey" >> test.txt
 
     #userManagement
