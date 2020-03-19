@@ -49,6 +49,8 @@ matrix:
         - npm install --check-files
       script: 
         - npm test
+      env:
+        - SERVER_IP_ADDRESS: 149.165.170.202
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - export REPO=nibafna/session-management
@@ -58,7 +60,7 @@ matrix:
         - docker push $REPO:$TAG
         - cd ../
         - eval "$(ssh-agent -s)"
-        - chmod 600 ./deploy_key
+        - chmod 600 ./nix-api-key.pub
         - echo -e "Host $SERVER_IP_ADDRESS\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
         - ssh-add ./nix-api-key.pub
         - ssh -i ./nix-api-key.pub ubuntu@149.165.170.202 pwd
