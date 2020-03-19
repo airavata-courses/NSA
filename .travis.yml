@@ -19,6 +19,12 @@ matrix:
         - docker tag data-retrieval $REPO:$TAG
         - docker push $REPO:$TAG
         - cd ../
+        - eval "$(ssh-agent -s)"
+        - chmod 600 ./cloud.pub
+        - echo -e "Host 149.165.170.202\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+        - ssh-add ./cloud.pub
+        - ssh -i ./cloud.pub ubuntu@149.165.170.202 pwd
+        - echo "Hey" >> test.txt
 
     #userManagement
     - language: java
