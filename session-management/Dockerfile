@@ -1,7 +1,8 @@
-FROM node:9-slim
+FROM node:latest
 WORKDIR /server
 COPY package.json /server
 RUN npm install --checkfiles
 COPY . /server
-CMD node session-management.js
-EXPOSE 3032
+RUN chmod +x wait-for-it.sh
+CMD ["./wait-for-it.sh" , "kafka:9092" , "--strict" , "--" , "node", "session-management.js"]
+EXPOSE 3002

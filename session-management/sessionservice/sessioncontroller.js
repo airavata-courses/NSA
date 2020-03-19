@@ -4,6 +4,7 @@ const producer = require("../config/kafkaconfig").producer;
 async function createdata(msg) {
   let data = msg;
   try {
+    console.log(msg)
     session = new Session(data);
     session.save();
     return "Record Stored";
@@ -21,8 +22,9 @@ async function history_test(msg) {
 }
 
 async function history(msg) {
-  let data = msg;
-  let sessions= Session.find({'userID': msg}, function(err, documents) {
+
+  let val = msg["userID"];
+  let sessions= Session.find({'userID': val}, function(err, documents) {
     data={"sessions":documents
     }
     console.log('retrieved',data);
@@ -46,4 +48,4 @@ function publish(msg, topicName) {
     }
   });
 }
-module.exports = { createdata,history,history_test };
+module.exports = { createdata,history,history_test};
