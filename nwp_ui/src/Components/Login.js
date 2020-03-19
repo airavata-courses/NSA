@@ -38,7 +38,7 @@ class Login extends React.Component {
     const jsonobj = JSON.stringify(user);
 
     axios
-      .post("http://apigateway_service:8081/login", [
+      .post("http://localhost:8081/login", [
         user.username +
           " " +
           user.firstName +
