@@ -55,7 +55,8 @@ public class ApiGatewayResource {
 	 KafkaTemplate<String,DataRetrievalTemplate> kafkaTemplateDataRetrieval;
 	  
 	
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	//@CrossOrigin(origins = "http://uiservice:3000", maxAge = 3600)
+	@CrossOrigin
 	@RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = "application/json")
 	public String login(@RequestBody User message ) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
 
