@@ -44,5 +44,5 @@ sess.listen(process.env.PORT,function(){
   console.log("server is running on port 3002");
 });
 }
-setTimeout(main, 10000);
+setTimeout(main, 50000);
 
