@@ -105,7 +105,7 @@ public class ApiGatewayResource {
 	@CrossOrigin //(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/sessionmgmt")
 
-	public SessionRequestTemplate sessionManagement( @RequestBody SessionRequestTemplate request )
+	public String sessionManagement( @RequestBody SessionRequestTemplate request )
 			throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		System.out.println("Inside session-mgmt and following is the request: "+request);
 		kafkaTemplateSession.send(TOPIC_SESSION_MESSAGE,request);
@@ -113,7 +113,7 @@ public class ApiGatewayResource {
 
 		
 		//Acknowledgment received from session retrieval service
-		SessionRequestTemplate sessionAck = sessionAcknowledgement.returnFeedback();
+		String sessionAck = sessionAcknowledgement.returnFeedback();
 		TimeUnit.SECONDS.sleep(10);
 		sessionAck = sessionAcknowledgement.returnFeedback();
 

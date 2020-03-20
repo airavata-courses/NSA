@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaListenerSessionFeedback {
 	
-	SessionRequestTemplate sessionData;
+	String sessionData;
 	
 	@KafkaListener(topics="sessionhistory-ui", groupId ="group_id")
-	public void consume(SessionRequestTemplate message) {
+	public void consume(String message) {
 			System.out.println("The session management feeback"+message);
 			sessionData=message;
 	}
 	
-	public SessionRequestTemplate returnFeedback() {
+	public String returnFeedback() {
 		System.out.println("Value returned from session management "+sessionData);
 		return sessionData;
 	}
