@@ -28,7 +28,7 @@ async function history(msg) {
     data={"sessions":documents
     }
     console.log('retrieved',data);
-    publish(data, 'sessionhistory_ui');
+    publish(data, 'sessionhistory-ui');
   }); 
 }
 

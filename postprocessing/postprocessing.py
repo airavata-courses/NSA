@@ -27,7 +27,7 @@ def plot_radar(filename):
     display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax2)
     display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax2)
     counter += 1
-    plot_name = '1.png'
+    plot_name = filename+'.png'
     print('Saving plot to', plot_name)
     plt.savefig("output/"+plot_name)
     print('Plot saved')

@@ -13,8 +13,6 @@ public class KafkaListenerDataRetrieval {
 	public void consumePPResult(String message) {		//replace with the data returned by PP module
 		
 		String resp= new String("success");
-		message = message.substring(1,message.length()-1);
-		
 		System.out.println("Come inside the Kafka Login feeback "+message);
 		System.out.println("message is "+ message + " resp is "+resp);
 		if(message.equals(resp)) {
