@@ -30,7 +30,7 @@ def plot_radar(filename):
     src_folder = os.path.join('..','nwp_ui','src')
     plot_name = os.path.join(src_folder, str(counter) + '.png')
     print('saving plot to', plot_name)
-    plt.savefig(plot_name)
+    # plt.savefig(plot_name)
     outputString = 'success'
     return outputString
 
