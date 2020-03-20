@@ -31,4 +31,7 @@ spec:
         image: nibafna/user-interface:latest
         ports:
         - containerPort: 3000
+        env:
+        - name: REACT_APP_BACKEND_IP
+          value: "149.165.170.202"
       restartPolicy: Always
