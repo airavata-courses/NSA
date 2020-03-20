@@ -22,7 +22,7 @@ spec:
   selector:
     matchLabels:
       app: api
-  replicas: 5
+  replicas: 1 
   strategy:
    type: Recreate
   template:
