@@ -132,7 +132,7 @@ matrix:
       install:
       - pip3 install -r requirements.txt
       script:
-      - #python3 test.py
+      - python3 test.py
       - echo "Insert test cases here"
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
