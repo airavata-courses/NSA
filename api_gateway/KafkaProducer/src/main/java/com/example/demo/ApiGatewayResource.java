@@ -67,7 +67,7 @@ public class ApiGatewayResource {
 		kafkaTemplateSession.send(TOPIC_SESSION_LOGIN_MESSAGE,request);	
 		System.out.println("Entered inside the login: "+message );
 
-		TimeUnit.SECONDS.sleep(2);
+		TimeUnit.SECONDS.sleep(5);
 		String ack= loginAcknowledgement.returnFeedback();
 		
 		return ack;
@@ -78,7 +78,7 @@ public class ApiGatewayResource {
 	public String register(@RequestBody User message) throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		kafkaTemplateRegister.send(TOPIC_REGISTER_MESSAGE,message);
 		System.out.println("Entered inside the register: "+message.getUserID() );
-		TimeUnit.SECONDS.sleep(2);
+		TimeUnit.SECONDS.sleep(5);
 		String ack= registerAcknowledgement.returnFeedback();
 		
 		return ack;
