@@ -1,34 +1,37 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: db
+  name: mysqldb
+  labels: 
+   app: mysqldb
 spec:
  type: ClusterIP
  ports:
   - port: 3306
     targetPort: 3306
  selector:
-  app: db
+  app: mysql
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: mysqldb
 spec:
   selector:
     matchLabels:
-      app: db
+      app: mysqldb
   replicas: 1
   template:
     metadata:
       labels:
-        app: db
+        app: mysqldb
     spec:
       containers:
-      - name: db
+      - name: mysqldb
         image: mysql:5.7
         ports:
         - containerPort: 3306
+          name: mysqldb
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "root_password"
@@ -38,4 +41,10 @@ spec:
           value: "user"
         - name: MYSQL_PASSWORD
           value: "password"
-
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-interface-service
+  name: ui
 spec:
  type: LoadBalancer
  ports:
@@ -9,33 +9,26 @@ spec:
     port: 3000
     nodePort: 31001
  selector:
-  app: user-interface-pod
+  app: ui
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-interface-deployment
+  name: ui
 spec:
   selector:
     matchLabels:
-      app: user-interface-pod
-  replicas: 3
-  strategy: 
-   type: Recreate
+      app: ui
+  replicas: 1
   template:
     metadata:
       labels:
-        app: user-interface-pod
+        app: ui
     spec:
       containers:
-      - name: user-interface-container
+      - name: ui
         imagePullPolicy: Always
-        image: nibafna/user-interface
+        image: nibafna/user-interface:latest
         ports:
         - containerPort: 3000
       restartPolicy: Always
-
-
-
-
-
