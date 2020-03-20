@@ -73,7 +73,7 @@ public class ApiGatewayResource {
 		return ack;
 	}
 	
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@CrossOrigin //(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value="/register", method = RequestMethod.POST, consumes = "application/json")
 	public String register(@RequestBody User message) throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		kafkaTemplateRegister.send(TOPIC_REGISTER_MESSAGE,message);
@@ -86,7 +86,7 @@ public class ApiGatewayResource {
 
 	
 	
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@CrossOrigin //(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/dataretrieval")
 	public String dataRetrival(@RequestBody DataRetrievalTemplate request) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
 		
@@ -102,7 +102,7 @@ public class ApiGatewayResource {
 	}
 	
 
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@CrossOrigin //(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/sessionmgmt")
 
 	public SessionRequestTemplate sessionManagement( @RequestBody SessionRequestTemplate request )
