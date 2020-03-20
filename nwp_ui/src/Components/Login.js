@@ -46,7 +46,7 @@ class Login extends React.Component {
     // message = JSON.parse(message);
     // console.log(msg);
     axios
-      .post("http://api:8081/login", JSON.parse(jsonobj))
+      .post("http://149.165.170.202:32450/login", JSON.parse(jsonobj))
       .then(res => {
         console.log("res_data",res.data);
         if (res.data == "LOGIN_SUCCESS") {
