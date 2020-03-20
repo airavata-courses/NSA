@@ -19,7 +19,7 @@ spec:
   selector:
     matchLabels:
       app: usermanagement-pod
-  replicas: 1
+  replicas: 5
   strategy:
    type: Recreate
   template:

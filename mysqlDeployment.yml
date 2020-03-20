@@ -18,7 +18,7 @@ spec:
   selector:
     matchLabels:
       app: db
-  replicas: 1
+  replicas: 5 
   template:
     metadata:
       labels:
