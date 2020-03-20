@@ -148,6 +148,8 @@ services:
     build: './postprocessing'
     networks: 
       - nsa
+    volumes:
+      - './output:/output'
     depends_on: 
       - kafka
       - zookeeper
@@ -160,3 +162,4 @@ networks:
 
 volumes:
     db_data: {}
+    output:

@@ -2,16 +2,16 @@ import json
 import sys
 import matplotlib.pyplot as plt
 import pyart
-import gzip
+from kafka import KafkaConsumer
+from kafka import KafkaProducer
+# import tempfile
+from datetime import datetime
 import os
 import time
-import warnings
-
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore",category=DeprecationWarning)
-    import pyart,matplotlib
+import nexradaws
 
 def plot_radar(filename):
+    print('Inside radar plot')
     counter = 0
     radar = pyart.io.read_nexrad_archive(filename)
     display = pyart.graph.RadarDisplay(radar)
@@ -27,15 +27,13 @@ def plot_radar(filename):
     display.plot_range_ring(radar.range['data'][-1]/1000., ax=ax2)
     display.set_limits(xlim=(-60, 0), ylim=(-25, 30), ax=ax2)
     counter += 1
-    src_folder = os.path.join('..','nwp_ui','src')
-    plot_name = os.path.join(src_folder, str(counter) + '.png')
-    print('saving plot to', plot_name)
-    # plt.savefig(plot_name)
+    plot_name = '1.png'
+    print('Saving plot to', plot_name)
+    plt.savefig("output/"+plot_name)
+    print('Plot saved')
     outputString = 'success'
-    return outputString
 
-from kafka import KafkaConsumer
-from kafka import KafkaProducer
+    return outputString,plot_name
 
 def compute():
     bootstrap_servers = ['kafka:9092']
@@ -53,33 +51,52 @@ def compute():
             print("Connection to broker failed. Retrying in 1s...")
             time.sleep(1)
     print("Connected to Kafka Broker")
+    conn = nexradaws.NexradAwsInterface()
     result=[]
     try:
         for message in consumer:
             print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,message.offset, message.key,message.value))
-            print(type(message))
-
-            # result = json.loads(message.value)
             print(message.value)
-            result = message.value['scans']
             res = message.value['pp']
 
-            for filename in result:
-                outputString = plot_radar(filename)
+            years = res['year']
+            months = res['month']
+            days = res['day']
+            radars = res['radarID']
+            userID = res['userID']
+
+            print(years, months, days, radars)
+            scans = conn.get_avail_scans(years, months, days, radars)
+
+            # templocation = tempfile.mkdtemp()
+            results = conn.download(scans[0:1], "output/")
+            print(results.success)
+            data = []
+            for scan in results.iter_success():
+                print("{} volume scan time {}".format(
+                    scan.radar_id, scan.scan_time))
+                data.append(scan.filepath)
+
+            for filename in data:
+                outputString, plot_name = plot_radar(filename)
+
+            print('-------')
+            print(outputString,plot_name)
+            print('-------')
+
             producer = KafkaProducer(
                 bootstrap_servers=bootstrap_servers,
-                retries=5,
-                value_serializer=lambda m: json.dumps(m).encode('utf-8'))
-            ack = producer.send('postprocess-messagehandler', value=outputString)
+                retries=5)
+            ack = producer.send('postprocess-messagehandler', b'success')
             metadata = ack.get()
             print(metadata.topic)
             print(metadata.partition)
+
             print('sent', outputString, 'to postprocess-messagehandler')
             print('before',res)
             res["jobtype"]="Post-Process"
             res["output"]=plot_name
             print('after',res)
-
 
             sess_producer = KafkaProducer(
                 bootstrap_servers = bootstrap_servers,
@@ -99,4 +116,3 @@ def compute():
 
 if  __name__ == "__main__":
     print("started post processing service!!")
-    compute()
