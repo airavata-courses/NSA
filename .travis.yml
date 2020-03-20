@@ -33,7 +33,7 @@ matrix:
         - cd user_management
       script:
         # - mvn -Dmaven.test.skip test-compile jar:test-jar install
-        - echo "Insert Test case here"
+        - echo "Insert Test cases here"
       after_success:
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         - export REPO=nibafna/user-management
