@@ -1,7 +1,7 @@
 matplotlib
 kafka-python
 nexradaws
-numpy
+numpy==1.16.1
 arm-pyart
 netCDF4
 scipy
