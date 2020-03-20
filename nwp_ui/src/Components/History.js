@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, Table } from "reactstrap";
+import axios from "axios";
+
 
 class History extends React.Component{
     constructor(props){
@@ -7,42 +9,17 @@ class History extends React.Component{
         this.state ={ 
             sessions: [
                 {
-                    jobstatus: '',
-                    jobtype: 'login',
-                    timeStamp: `2020-03 - 11T21: 43: 08.441Z`,
-                    userID: 'shivali',
-                    day: '',
-                    month: '',
-                    year: '',
-                    radarID: '',
-                    output: '',
-                    createdAt: `2020 - 03 - 11T21: 46: 14.959Z`,
-                    updatedAt: `2020 - 03 - 11T21: 46: 14.959Z`,
+                    jobstatus: 'loading',
+                    jobtype: 'loading',
+                    timeStamp: 'loading',
+                    userID: 'loading',
+                    day: 'loading',
+                    month: 'loading',
+                    year: 'loading',
+                    radarID: 'loading',
+                    output: 'loading',
+                    createdAt: 'loading',
                 },
-                {
-                    jobstatus: 'success',
-                    jobtype: 'login',
-                    userID: 'shivali',
-                    day: '',
-                    month: '',
-                    year: '',
-                    radarID: '',
-                    output: '',
-                    createdAt: `2020 - 03 - 20T00: 50: 58.516Z`,
-                    updatedAt: `2020 - 03 - 20T00: 50: 58.516Z`,
-                },
-                {
-                    jobstatus: 'success',
-                    jobtype: 'login',
-                    userID: 'shivali',
-                    day: '',
-                    month: '',
-                    year: '',
-                    radarID: '',
-                    output: '',
-                    createdAt: `2020 - 03 - 20T05: 50: 20.491Z`,
-                    updatedAt: `2020 - 03 - 20T05: 50: 20.491Z`,
-                }
             ],
             fields: [
                 'Job Status',
@@ -56,6 +33,23 @@ class History extends React.Component{
                 'Timestamp',
             ]
         }
+        let user = {
+            userID: this.props.userID,
+            day: "",
+            month: "",
+            year: "",
+            radarID: "",
+            output: "",
+            jobstatus: "",
+            jobtype: "login",
+        };
+        axios
+            .post("http://" + process.env.REACT_APP_BACKEND_IP + ":32450/sessionmgmt", JSON.parse(JSON.stringify(user)))
+            .then(res => {
+                console.log("session_data", res.data);
+                this.setState({sessions: res.data.sessions})
+
+            });
     }
 
     render() {
@@ -65,6 +59,7 @@ class History extends React.Component{
         let sessions = this.state.sessions.map(
             (item, key) => <SessionItem item={item}/>
         );
+        
         return(
             <div>
                 <div class='login-form'>
