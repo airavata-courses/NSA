@@ -8,6 +8,7 @@ import App from "../App";
 
 class Login extends React.Component {
   constructor(props) {
+    console.log('GARLIC',process.env.REACT_APP_LASOON);
     super(props);
     this.state = {
       alerts: null,
@@ -46,7 +47,7 @@ class Login extends React.Component {
     // message = JSON.parse(message);
     // console.log(msg);
     axios
-      .post("http://149.165.170.202:32450/login", JSON.parse(jsonobj))
+      .post("http://" + process.env.REACT_APP_BACKEND_IP + ":32450/login", JSON.parse(jsonobj))
       .then(res => {
         console.log("res_data",res.data);
         if (res.data == "LOGIN_SUCCESS") {

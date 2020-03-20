@@ -234,7 +234,7 @@ class Dashboard extends React.Component {
 
         let message = JSON.stringify(dataretrieval_information);
         message = JSON.parse(message);
-        axios.post("http://149.165.170.202:32450/dataretrieval", message).then(res=>{
+        axios.post("http://" + process.env.REACT_APP_BACKEND_IP + ":32450/dataretrieval", message).then(res=>{
             console.log("res.data",res.data);
             if(res.data == 'success'){
                 this.displayImage();
