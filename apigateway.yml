@@ -1,34 +1,37 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: apigateway-service
+  name: api
 spec:
  type: LoadBalancer
  ports:
-  - targetPort: 8081
+  - name: "8081"
     port: 8081
-    nodePort: 31002
+    nodePort: 32450
+    targetPort: 8081
  selector:
-  app: api-gateway-pod
+  app: api
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apigateway-deployment
+  name: api
+  labels:
+   app: api
 spec:
   selector:
     matchLabels:
-      app: api-gateway-pod
+      app: api
   replicas: 1
-  strategy: 
+  strategy:
    type: Recreate
   template:
     metadata:
       labels:
-        app: api-gateway-pod
+        app: api
     spec:
       containers:
-      - name: api-gateway-container
+      - name: api
         imagePullPolicy: Always
         image: nibafna/api-gateway:latest
         ports:
