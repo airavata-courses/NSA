@@ -23,6 +23,11 @@ matrix:
         - chmod 600 cloud-key
         - eval "$(ssh-agent -s)"
         - ssh -o StrictHostKeyChecking=no -i cloud-key ubuntu@149.165.170.202 pwd
+        - ssh -i RandomError-api-key ubuntu@149.165.170.111 "sudo apt install gnupg2 pass && 
+				- sudo apt-get update &&
+				- sudo apt-get install -y kubectl &&
+				- sudo rm -rf NSA &&
+				- git clone -b test_dockerize https://github.com/airavata-courses/NSA.git &&
         - echo "Hey" >> test.txt
 
     #userManagement
