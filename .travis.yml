@@ -1,23 +1,25 @@
 language: node_js
 sudo: false
 node_js: 10.16
-cache:
-  directories:
-    - "node_modules"
 before-install:
   - cd session-management
+  - rm -rf node_modules/
 install:
   - npm install --check-files
 script: 
-#  - npm start
-  - echo "Insert tests here - session management"
+  - npm test
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - export REPO=nibafna/session-management
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/session-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=latest
   - docker build -t session-management .
   - docker tag session-management $REPO:$TAG
   - docker push $REPO:$TAG
+  - cd ../
+  - chmod 600 cloud-key
+  - eval "$(ssh-agent -s)"
+  - ssh -o StrictHostKeyChecking=no -i cloud-key ubuntu@149.165.170.202 pwd
+  - ssh -i cloud-key ubuntu@149.165.170.202 ./deploy_sessionmgmt.sh
 branches:
   only:
   - feature/session-management

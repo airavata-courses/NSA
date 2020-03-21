@@ -2,29 +2,33 @@ var Session = require("../models/sessionmodel");
 const producer = require("../config/kafkaconfig").producer;
 
 async function createdata(msg) {
-  let data = JSON.parse(msg.value);
+  let data = msg;
   try {
+    console.log(msg)
     session = new Session(data);
-    console.log(data);
-    console.log(session)
-    let x = await session.save();
-    console.log("hey",x)
+    session.save();
+    return "Record Stored";
   } catch (err) {
     console.log(err.message);
   }
 }
 
+async function history_test(msg) {
+  let data = msg;
+  let sessions= Session.find({'userID': msg}, function(err, documents) {
+    data={"sessions":documents};
+  });
+  return "Record Retrieved";
+}
+
 async function history(msg) {
-  let data = JSON.parse(msg.value);
-  console.log('retrieved');
-  let sessions= Session.find({'userID': data['userID']}, function(err, documents) {
-    data={"sessions":documents,
-      "userID":data['userID'],
-      "userID":data['userID']
-      
+
+  let val = msg["userID"];
+  let sessions= Session.find({'userID': val}, function(err, documents) {
+    data={"sessions":documents
     }
     console.log('retrieved',data);
-    publish(data, 'sessionhistory_ui');
+    publish(data, 'sessionhistory-ui');
   }); 
 }
 
@@ -44,4 +48,4 @@ function publish(msg, topicName) {
     }
   });
 }
-module.exports = { createdata,history };
+module.exports = { createdata,history,history_test};

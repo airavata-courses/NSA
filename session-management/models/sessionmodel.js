@@ -36,11 +36,7 @@ var session = new mongoose.Schema({
   jobtype:{
     type: String,
     default:'None'
-  },
-  timeStamp: {
-    type: Date,
-    default: Date.now()
-}
+  }
 });
 session.set('timestamps', true);
 module.exports = mongoose.model('session_data', session);

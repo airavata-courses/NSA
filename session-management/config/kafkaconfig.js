@@ -1,19 +1,23 @@
 var kafka = require("kafka-node");
-Consumer = kafka.Consumer;
+const ConsumerGroup = kafka.ConsumerGroup
 client = new kafka.KafkaClient({kafkaHost: 'kafka:9092'});
-consumer = new Consumer(
-  client,
-  [
-    { topic: "login-sessionmgmt", partition: 0 },
-    { topic: "dataretrieval-sessionmgmt", partition: 0 },
-    { topic: "postprocess-sessionmgmt", partition: 0 },
-    { topic: "ui-sessionhistory", partition: 0 }
-  ],
-  {
-    autoCommit: false,
-    fromOffset: true
-  }
-);
+
+const consumerOptions = {
+  kafkaHost: 'kafka:9092',
+  autoCommit: false,
+  encoding: "utf8",
+  groupId: "session-management",
+  protocol: ["roundrobin"],
+  fromOffset: "latest"
+};
+
+const consumer = new ConsumerGroup(consumerOptions, [
+  "login-sessionmgmt",
+  "dataretrieval-sessionmgmt",
+  "postprocess-sessionmgmt",
+  "ui-sessionhistory"
+]);
+
 
 Producer = kafka.Producer;
 producer = new Producer(client);
