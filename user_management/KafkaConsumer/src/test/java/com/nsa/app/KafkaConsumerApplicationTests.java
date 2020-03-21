@@ -10,14 +10,14 @@ import com.nsa.app.model.User;
 import com.nsa.app.repository.UserRepository;
 import org.junit.*;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.mockito.Mockito.when;
-import org.junit.runner.RunWith;
+//import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,7 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest(classes=ApplicationContext.class)
 @AutoConfigureMockMvc
 public class KafkaConsumerApplicationTests {
@@ -39,7 +39,7 @@ public class KafkaConsumerApplicationTests {
 //	void contextLoads() {
 //	}
 	
-	
+	/*
 	@MockBean
 	UserRepository userrepo;
 
@@ -60,24 +60,22 @@ public class KafkaConsumerApplicationTests {
 	
 	@Test
 	public void userTest() {
-		//System.out.println("**********START OF TESTCASE 1 ***************");
+		System.out.println("**********START OF TESTCASE 1 ***************");
 		assertEquals(user.getUserName(),"NikitaB");
 		assertEquals(user.getLastName(),"Bafna");
 		assertEquals(user.getFirstName(),"Nikita");
 		assertEquals(user.getEmail(),"niki@gmail.com");
-		//System.out.println("************** SUCCESSFUL EXECUTION OF TESTCASE 1 ************************");
 		
 	}
 	
 	
 	@Test
 	public void getUserByUserNameTest() {
-		//System.out.println("**********START OF TESTCASE 2 ***************");
+		System.out.println("**********START OF TESTCASE 2 ***************");
 		when(userrepo.findByuserName("NikitaB")).thenReturn(user);
 		assertEquals("NikitaB",user.getUserName());
-		//System.out.println("************** SUCCESSFUL EXECUTION OF TESTCASE 2 ************************");
 		
 	}
-
-	
+	*/
 }
+

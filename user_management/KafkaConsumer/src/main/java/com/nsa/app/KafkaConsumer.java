@@ -33,29 +33,29 @@ public class KafkaConsumer {
 	@Autowired
 	KafkaTemplate<String,SessionLog> kafkaTemplateSessionLog;
 
-	@KafkaListener(topics="KafkaLoginMessage", groupId ="group_id", containerFactory="userKafkaListenerFactory")
+	@KafkaListener(topics="KafkaLoginMessage", containerFactory="userKafkaListenerFactory")
 	public void consumeLogin(UserInput message) throws JSONException {		
 	
-		System.out.println("message received is in login"+message);
+		System.out.println("message received is in login"+message.getUserID());
 		
-		String username=message.getUserName();
+		String username=message.getUserID();
 		String password=message.getPassword();
 	
-		  User user= userRepository.findByuserName(username);
+		  User user= userRepository.findByuserID(username);
 		  
 		  
 		  if(user != null ) {
-				System.out.println("db pass "+user.getPassword()+ "db username "+user.getUserName());
-				System.out.println("value pass "+message.getPassword()+ "value username "+message.getUserName());
-				if((user.getPassword().equals(message.getPassword())) && (user.getUserName().equals(message.getUserName()))) {
-					System.out.println("SUCESSS>>>>>>>>>>>>>>>>>>>>>");
+				System.out.println("db pass "+user.getPassword()+ "db username "+user.getUserID());
+				System.out.println("value pass "+message.getPassword()+ "value username "+message.getUserID());
+				if((user.getPassword().equals(message.getPassword())) && (user.getUserID().equals(message.getUserID()))) {
+					System.out.println("SUCESSS in login success");
 					kafkaTemplate.send(TOPIC_LOGIN_ACK,"LOGIN_SUCCESS");
 					
 					// send message to session-mgmt userid+ login_success
 					 
 					SessionLog sessionLog = new SessionLog();
 					sessionLog.setStatus("LOGIN_SUCCESS");
-					sessionLog.setUserName(username);
+					sessionLog.setUserID(username);
 					
 //					JsonObject sessionlogObj = new JsonObject();
 //					sesessionlogObj.put("status","LOGIN_SUCCESS");
@@ -63,33 +63,34 @@ public class KafkaConsumer {
 					kafkaTemplateSessionLog.send(TOPIC_SESSION_LOG,sessionLog);
 				}
 				else {
-					System.out.println("Faileeeeeeeeeeeeeeeeee");
+					System.out.println("Login failure");
 					kafkaTemplate.send(TOPIC_LOGIN_ACK,"LOGIN_FAIL");
 				}
 			}
 			else {
-				System.out.println("HSSKVFPdkl");
+				System.out.println("Login failure");
 				kafkaTemplate.send(TOPIC_LOGIN_ACK,"LOGIN_FAIL");
 
 		}	
 	}
 
 	
-	@KafkaListener(topics="KafkaRegisterMessage", groupId ="group_id", containerFactory="userKafkaListenerFactory")
+	@KafkaListener(topics="KafkaRegisterMessage", containerFactory="userKafkaListenerFactory")
 	public void consumeRegister(UserInput message) {
 		
-		System.out.println("Come inside the Kafka consumer register method");
+		System.out.println("Come inside the Kafka consumer register method"+message.toString());
 
 		User user = new User();
-		user.setUserName(message.getUserName());
+		user.setUserID(message.getUserID());
 		user.setFirstName(message.getFirstName());
 		user.setLastName(message.getLastName());
 		user.setEmail(message.getEmail());
 		user.setPassword(message.getPassword());
 		
-		if(userRepository.findByuserName(message.getUserName())== null) {
+		if(userRepository.findByuserID(message.getUserID())== null) {
 			System.out.println("User doesnot exist, hence ");
-		userRepository.save(user);
+			System.out.println("email id is"+message.getEmail());
+			userRepository.save(user); 
 		kafkaTemplate.send(TOPIC_REGISTER_ACK,"REGISTER_SUCCESS");
 		}
 		else {

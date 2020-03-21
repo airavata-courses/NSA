@@ -19,9 +19,9 @@ public class User {
 	@NotEmpty(message = "*Please provide your first name")
 	private String firstName;
 	
-	@Column(name = "userName")
-	@NotEmpty(message = "*Please provide your user name")
-	private String userName;
+	@Column(name = "userID")
+	@NotEmpty(message = "*Please provide your user id")
+	private String userID;
 	
 	@Column(name = "lastName")
 	private String lastName;
@@ -45,24 +45,24 @@ public class User {
 	}
 
 
-	public User(int id, String firstName, String lastName, String email,String userName,String password) {
+	public User(int id, String firstName, String lastName, String email,String userID,String password) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.userName=userName;
+		this.userID=userID;
 		this.password=password;
 		
 	}
 	
-	public User( String firstName, String lastName, String email,String userName,String password) {
+	public User( String firstName, String lastName, String email,String userID,String password) {
 		super();
 		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.userName=userName;
+		this.userID=userID;
 		this.password=password;
 		
 	}
@@ -98,12 +98,12 @@ public class User {
 		this.email = email;
 	}
 	
-	public String getUserName() {
-		return userName;
+	public String getUserID() {
+		return userID;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserID(String userID) {
+		this.userID= userID;
 	}
 	
 

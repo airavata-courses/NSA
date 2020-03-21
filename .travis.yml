@@ -9,10 +9,15 @@ script:
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - export REPO=nibafna/user-management
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/user-management" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=latest
   - docker build -t user-management .
   - docker tag user-management $REPO:$TAG
   - docker push $REPO:$TAG
+  - cd ../
+  - chmod 600 cloud-key
+  - eval "$(ssh-agent -s)"
+  - ssh -o StrictHostKeyChecking=no -i cloud-key ubuntu@149.165.170.202 pwd
+  - ssh -i cloud-key ubuntu@149.165.170.202 ./deploy_usermgmt.sh
 branches:
   only:
   - feature/user-management
