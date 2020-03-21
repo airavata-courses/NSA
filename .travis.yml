@@ -20,7 +20,6 @@ after-success:
   - chmod 600 cloud-key
   - eval "$(ssh-agent -s)"
   - ssh -o StrictHostKeyChecking=no -i cloud-key ubuntu@149.165.170.202 pwd
-  - ssh -i cloud-key ubuntu@149.165.170.202 ./master.sh
   - ssh -i cloud-key ubuntu@149.165.170.202 ./deploy_dataretrieval.sh
 branches:
   only:
