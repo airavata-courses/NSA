@@ -19,7 +19,7 @@ spec:
   selector:
     matchLabels:
       app: session-manager
-  replicas: 5 
+  replicas: 1 
   template:
     metadata:
       labels:
