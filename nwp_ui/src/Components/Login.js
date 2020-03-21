@@ -8,6 +8,7 @@ import App from "../App";
 
 class Login extends React.Component {
   constructor(props) {
+    console.log('GARLIC',process.env.REACT_APP_LASOON);
     super(props);
     this.state = {
       alerts: null,
@@ -24,7 +25,7 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const user = {
-      userName: this.state.name,
+      userID: this.state.name,
       firstName: "null",
       lastName: "null",
       emailId: "null",
@@ -46,10 +47,11 @@ class Login extends React.Component {
     // message = JSON.parse(message);
     // console.log(msg);
     axios
-      .post("http://localhost:8081/login", JSON.parse(jsonobj))
+      .post("http://" + process.env.REACT_APP_BACKEND_IP + ":32450/login", JSON.parse(jsonobj))
       .then(res => {
-        console.log(res.data);
+        console.log("res_data",res.data);
         if (res.data == "LOGIN_SUCCESS") {
+          this.props.setUserID(this.state.name);
           this.props.views.dashboard();
         }
         else {

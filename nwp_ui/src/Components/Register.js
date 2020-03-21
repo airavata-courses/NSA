@@ -11,7 +11,7 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: "",
+      userID: "",
       firstName: "",
       lastName: "",
       emailId: "",
@@ -26,7 +26,7 @@ class Register extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const user = {
-      userName: this.state.username,
+      userID: this.state.username,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       email: this.state.emailId,
@@ -37,7 +37,7 @@ class Register extends Component {
      const jsonobj = JSON.stringify(user);
 
     axios
-      .post("http://localhost:8081/register", JSON.parse(jsonobj))
+      .post("http://" + process.env.REACT_APP_BACKEND_IP + ":32450/register", JSON.parse(jsonobj))
       .then(res => {
         console.log(res.data);
         if (res.data == "REGISTER_SUCCESS") {

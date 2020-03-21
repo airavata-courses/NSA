@@ -11,11 +11,12 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             date: new Date(),
-            user: {
-                userName: "shivali",
-                firstName: "shiv",
-                lastName: "Jejurkar",
-                emailId: "null"
+            dataretrieval_information: {
+                userID: null,
+                month: null,
+                year: null,
+                radarID: null,
+                day: null,
             },
             radarID: {value: 'KIND', label: 'KIND'},
             options: [
@@ -219,9 +220,21 @@ class Dashboard extends React.Component {
         let month = dateISO.substring(5,7);
         let day = dateISO.substring(8, 10);
         let radarID = this.state.radarID.value;
-        let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userName];
-        console.log(message)
-        axios.post("http://localhost:8081/dataretrieval", message).then(res=>{
+        let dataretrieval_information = {
+            userID: this.props.userID,
+            day,
+            radarID,
+            month,
+            year
+        }
+        this.setState({dataretrieval_information})
+        console.log(dataretrieval_information)
+        // let message = [day + ' ' + month + ' ' + year + ' ' + radarID + ' ' + this.state.user.userID];
+        
+
+        let message = JSON.stringify(dataretrieval_information);
+        message = JSON.parse(message);
+        axios.post("http://" + process.env.REACT_APP_BACKEND_IP + ":32450/dataretrieval", message).then(res=>{
             console.log("res.data",res.data);
             if(res.data == 'success'){
                 this.displayImage();
@@ -243,6 +256,7 @@ class Dashboard extends React.Component {
     // });
 
     render() {
+        console.log(this.props);
         return (
             <Form className="dashboard-form">
                 <div>
