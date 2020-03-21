@@ -4,17 +4,14 @@ ADD postprocessing.py /
 
 RUN pip install --upgrade pip
 
-RUN pip install matplotlib
-RUN pip install kafka
-RUN pip install nexradaws
-RUN pip install numpy
-RUN pip install arm-pyart
-RUN pip install netCDF4
-RUN pip install scipy
-RUN pip install pandas
-
-#ADD requirements.txt /
-#RUN pip3 install -r requirements.txt
+RUN pip3 install matplotlib
+RUN pip3 install kafka-python
+RUN pip3 install nexradaws
+RUN pip3 install numpy==1.16.1
+RUN pip3 install arm-pyart
+RUN pip3 install netCDF4
+RUN pip3 install scipy
+RUN pip3 install pandas
 
 ENV PYTHONUNBUFFERED 0
 CMD [ "python3", "-u" , "./postprocessing.py" ]

@@ -7,14 +7,20 @@ before-install:
 install:
 - pip3 install -r requirements.txt
 script:
-- echo "Insert test cases here"
-after-success:
+- python3 test.py
+- echo "Test cases succesfully executed"
+after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
   - export REPO=nibafna/post-process
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/post-processing" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=latest
   - docker build -t post-process .
   - docker tag post-process $REPO:$TAG
   - docker push $REPO:$TAG
+  - cd ../
+  - chmod 600 cloud-key
+  - eval "$(ssh-agent -s)"
+  - ssh -o StrictHostKeyChecking=no -i cloud-key ubuntu@149.165.170.202 pwd
+  - ssh -i cloud-key ubuntu@149.165.170.202 ./deploy_postprocess.sh
 branches:
 only:
 - feature/post-processing
