@@ -10,12 +10,18 @@ script:
 - python3 dataretrieval_test.py 
 - echo "Succesfully ran Test cases for Data retrieval services"
 after-success:
-- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- export REPO=nibafna/data-retrieval
-- export TAG=`if [ "$TRAVIS_BRANCH" == "feature/data-retrieval" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-- docker build -t data-retrieval .
-- docker tag data-retrieval $REPO:$TAG
-- docker push $REPO:$TAG
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - export REPO=nibafna/data-retrieval
+  - export TAG=latest
+  - docker build -t data-retrieval .
+  - docker tag data-retrieval $REPO:$TAG
+  - docker push $REPO:$TAG
+  - cd ../
+  - chmod 600 cloud-key
+  - eval "$(ssh-agent -s)"
+  - ssh -o StrictHostKeyChecking=no -i cloud-key ubuntu@149.165.170.202 pwd
+  - ssh -i cloud-key ubuntu@149.165.170.202 ./master.sh
+  - ssh -i cloud-key ubuntu@149.165.170.202 ./deploy_dataretrieval.sh
 branches:
-only:
-- feature/data-retrieval
+  only:
+    - feature/data-retrieval
