@@ -149,4 +149,4 @@ matrix:
 
 branches:
   only:
-  - assignment2 
+  - assignment2
