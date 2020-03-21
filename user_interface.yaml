@@ -33,5 +33,5 @@ spec:
         - containerPort: 3000
         env:
         - name: REACT_APP_BACKEND_IP
-          value: "149.165.170.202"
+          value: "$REACT_APP_BACKEND_IP"
       restartPolicy: Always
