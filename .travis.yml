@@ -149,4 +149,4 @@ matrix:
 
 branches:
   only:
-  - test_dockerize_CD
+  - assignment2 
