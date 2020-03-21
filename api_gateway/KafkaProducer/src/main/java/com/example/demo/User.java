@@ -13,7 +13,7 @@ public class User {
 	private String firstName;
 	
 	
-	private String userName;
+	private String userID;
 	
 	
 	private String lastName;
@@ -43,13 +43,13 @@ public class User {
 	 * }
 	 */
 	
-	public User( String firstName, String lastName, String email,String userName,String password) {
+	public User( String firstName, String lastName, String email,String userID,String password) {
 		super();
 		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.userName=userName;
+		this.userID=userID;
 		this.password=password;
 		
 	}
@@ -82,12 +82,12 @@ public class User {
 		this.email = email;
 	}
 	
-	public String getUserName() {
-		return userName;
+	public String getUserID() {
+		return userID;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 	
 

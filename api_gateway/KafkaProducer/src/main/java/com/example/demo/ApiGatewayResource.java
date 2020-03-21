@@ -55,29 +55,30 @@ public class ApiGatewayResource {
 	 KafkaTemplate<String,DataRetrievalTemplate> kafkaTemplateDataRetrieval;
 	  
 	
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	//@CrossOrigin(origins = "http://uiservice:3000", maxAge = 3600)
+	@CrossOrigin
 	@RequestMapping(value = "/login" , method = RequestMethod.POST, consumes = "application/json")
 	public String login(@RequestBody User message ) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
 
-		System.out.println("Welcome in login : "+message );
+		System.out.println("Welcome in login : "+message.getUserID() );
 		kafkaTemplateLogin.send(TOPIC_LOGIN_MESSAGE,message);
-		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserName(), "","","","","",
-				"", "login");
+		SessionRequestTemplate request= new SessionRequestTemplate(message.getUserID(), "","","","","",
+				"success", "login");
 		kafkaTemplateSession.send(TOPIC_SESSION_LOGIN_MESSAGE,request);	
 		System.out.println("Entered inside the login: "+message );
 
-		TimeUnit.SECONDS.sleep(2);
+		TimeUnit.SECONDS.sleep(5);
 		String ack= loginAcknowledgement.returnFeedback();
 		
 		return ack;
 	}
 	
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@CrossOrigin //(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value="/register", method = RequestMethod.POST, consumes = "application/json")
 	public String register(@RequestBody User message) throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		kafkaTemplateRegister.send(TOPIC_REGISTER_MESSAGE,message);
-		System.out.println("Entered inside the register: "+message );
-		TimeUnit.SECONDS.sleep(2);
+		System.out.println("Entered inside the register: "+message.getUserID() );
+		TimeUnit.SECONDS.sleep(5);
 		String ack= registerAcknowledgement.returnFeedback();
 		
 		return ack;
@@ -85,26 +86,26 @@ public class ApiGatewayResource {
 
 	
 	
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@CrossOrigin //(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/dataretrieval")
 	public String dataRetrival(@RequestBody DataRetrievalTemplate request) throws InterruptedException, URISyntaxException, JSONException, ExecutionException{
 		
 		kafkaTemplateDataRetrieval.send(TOPIC_DATARETRIVE_MESSAGE,request);
-		logger.debug("Request message to data retrieval service is: "+request);
+		System.out.println("Request message to data retrieval service is: "+request);
 		
 		String dataRetrievalAck= dataAcknowledgement.returnFeedback();
 		TimeUnit.SECONDS.sleep(2);
 		dataRetrievalAck= dataAcknowledgement.returnFeedback();
-		logger.debug("Acknowledgement received from data retrieval is "+dataRetrievalAck);
+		System.out.println("Acknowledgement received from data retrieval is "+dataRetrievalAck);
 		
 		return dataRetrievalAck;
 	}
 	
 
-	@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+	@CrossOrigin //(origins = "http://localhost:3000", maxAge = 3600)
 	@RequestMapping(value = "/sessionmgmt")
 
-	public SessionRequestTemplate sessionManagement( @RequestBody SessionRequestTemplate request )
+	public String sessionManagement( @RequestBody SessionRequestTemplate request )
 			throws InterruptedException, URISyntaxException, JSONException, ExecutionException {
 		System.out.println("Inside session-mgmt and following is the request: "+request);
 		kafkaTemplateSession.send(TOPIC_SESSION_MESSAGE,request);
@@ -112,7 +113,7 @@ public class ApiGatewayResource {
 
 		
 		//Acknowledgment received from session retrieval service
-		SessionRequestTemplate sessionAck = sessionAcknowledgement.returnFeedback();
+		String sessionAck = sessionAcknowledgement.returnFeedback();
 		TimeUnit.SECONDS.sleep(10);
 		sessionAck = sessionAcknowledgement.returnFeedback();
 
