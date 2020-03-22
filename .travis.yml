@@ -5,14 +5,19 @@ before-script:
   - cd api_gateway
 script:
   # - mvn -Dmaven.test.skip test-compile jar:test-jar install
-  - echo "Insert Test case here"
+  - echo "Test case for API gateway"
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - export REPO=nibafna/api-gateway
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "feature/api-gateway" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=latest
   - docker build -t api-gateway .
   - docker tag api-gateway $REPO:$TAG
   - docker push $REPO:$TAG
+  - cd ../
+  - chmod 600 cloud-key
+  - eval "$(ssh-agent -s)"
+  - ssh -o StrictHostKeyChecking=no -i cloud-key ubuntu@149.165.170.202 pwd
+  - ssh -i cloud-key ubuntu@149.165.170.202 ./deploy_api.sh
 branches:
   only:
   - feature/api-gateway
